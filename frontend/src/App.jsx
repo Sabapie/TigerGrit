@@ -10,11 +10,12 @@ function App() {
   const [count, setCount] = useState(0)
 
   useEffect(() => {
-    axios.get('http://localhost/GitHub/TigerGrit/backend/public/api/test')
+    axios.get(`${import.meta.env.VITE_API_URL}/test`)
       .then(res => {
         setMessage(res.data.message)
       })
-      .catch(() => {
+      .catch(error => {
+        console.error(error)
         setMessage('error conectando con backend')
       })
   }, [])
