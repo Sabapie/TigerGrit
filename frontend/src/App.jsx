@@ -1,94 +1,55 @@
 import './App.css'
 
-// Dependencias Axios para hacer peticiones HTTP
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import {
+  BrowserRouter,
+  Routes,
+  Route
+} from 'react-router-dom'
+
+import Home from './pages/Home'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import Dashboard from './pages/Dashboard'
+import NotFound from './pages/NotFound'
+import ProtectedRoute from './components/ProtectedRoute'
+
 
 function App() {
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
-  const login = async () => {
-      
-    try {
-
-      const response = await axios.post( // Se hace la petición POST al endpoint de login de tu backend
-        `${import.meta.env.VITE_API_URL}/login`,
-        {
-          email,
-          password
-        }
-      )
-
-      localStorage.setItem( // Se guarda el token en el localStorage del navegador
-        'token',
-        response.data.token
-      )
-
-      console.log(response.data)
-
-    } catch (error) {
-
-      console.error(error)
-
-    }
-  }
-
-  const getUser = async () => {
-
-  const token = localStorage.getItem('token')
-
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/user`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          }
-        )
-      
-        console.log(response.data)
-
-        } catch (error) {
-
-          console.error(error)
-
-        }
-    }
-
   return (
 
-    <div>
+    <BrowserRouter>
 
-      <h1>Login</h1>
+      <Routes>
 
-      <input
-        type="email"
-        placeholder="email"
-        onChange={(e) => setEmail(e.target.value)}
-      />
+        {/* Ruta para páginas no encontradas */}
+        <Route
+          path="*" element={<NotFound />}
+        />
 
-      <input
-        type="password"
-        placeholder="password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <Route
+          path="/" element={<Home />}
+        />
 
-      <button onClick={login}>
-        Login
-      </button>
+        <Route
+          path="/login" element={<Login />}
+        />
 
+        <Route
+          path="/register" element={<Register />}
+        />
 
-      <button onClick={getUser}>
-        Obtener usuario
-      </button>
+        {/* Ruta protegida para el dashboard */}
+        <Route
+          path="/dashboard" element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        } />
+      </Routes>
 
-    </div>
+    </BrowserRouter>
   )
-
-  
 }
 
 export default App
