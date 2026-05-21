@@ -1,35 +1,48 @@
 import './App.css'
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import Home from './pages/Home'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import Dashboard from './pages/Dashboard'
+import NotFound from './pages/NotFound'
+import ProtectedRoute from './components/ProtectedRoute'
 
-// Dependencias Axios para hacer peticiones HTTP
-import { useEffect, useState } from 'react'
-import axios from 'axios'
 
-// LLamada al backend para obtener un mensaje de prueba y mostrarlo en la interfaz
 function App() {
-  const [message, setMessage] = useState('cargando...')
-  const [count, setCount] = useState(0)
-
-  useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_URL}/test`)
-      .then(res => {
-        setMessage(res.data.message)
-      })
-      .catch(error => {
-        console.error(error)
-        setMessage('error conectando con backend')
-      })
-  }, [])
 
   return (
-    <div>
-      <h1>React + Laravel</h1>
 
-      <p>{message}</p>
+    <BrowserRouter>
 
-      <button onClick={() => setCount(count + 1)}>
-        Count: {count}
-      </button>
-    </div>
+      <Routes>
+
+        {/* Ruta para páginas no encontradas */}
+        <Route
+          path="*" element={<NotFound />}
+        />
+
+        <Route
+          path="/" element={<Home />}
+        />
+
+        <Route
+          path="/login" element={<Login />}
+        />
+
+        <Route
+          path="/register" element={<Register />}
+        />
+
+        {/* Ruta protegida para el dashboard */}
+        <Route
+          path="/dashboard" element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        } />
+      </Routes>
+
+    </BrowserRouter>
   )
 }
 
