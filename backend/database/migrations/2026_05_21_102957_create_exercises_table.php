@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer('repetitions');
             $table->integer('sets');
             $table->string('muscle_group');
+            $table->string('muscle_area');
             $table->string('weight')->nullable();
             $table->text('observations')->nullable();
             $table->boolean('is_official')->default(false);
