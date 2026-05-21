@@ -5,20 +5,15 @@ import axios from 'axios'
 function Dashboard() {
 
   const navigate = useNavigate()
-
   const [user, setUser] = useState(null)
 
-  useEffect(() => {
-
-    getUser()
-
-  }, [])
+  useEffect(() => {getUser()}, [])
 
   const getUser = async () => {
 
     const token = localStorage.getItem('token')
 
-    if (!token) {
+    if (!token) { // Si no hay token, redirige al login
 
       navigate('/login')
       return
