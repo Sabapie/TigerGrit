@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 function Dashboard() {
@@ -81,6 +82,22 @@ function Dashboard() {
       <button onClick={logout}>
         Cerrar sesión
       </button>
+
+      <Link to="/exercises">
+
+        <button>
+          Ver ejercicios
+        </button>
+
+      </Link>
+
+      <Link to="/create-exercise">
+
+        <button>
+            Crear ejercicio
+        </button>
+
+    </Link>
 
     </div>
   )

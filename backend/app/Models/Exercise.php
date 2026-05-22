@@ -7,6 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 class Exercise extends Model
 {
     //
+
+    protected $fillable = [
+
+        'user_id',
+        'parent_exercise_id',
+        'name',
+        'description',
+        'image',
+        'duration',
+        'rest',
+        'repetitions',
+        'sets',
+        'muscle_group',
+        'muscle_area',
+        'observations',
+        'is_official'
+        
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class); // Relación con el usuario que creó el ejercicio
