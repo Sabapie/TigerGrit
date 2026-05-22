@@ -6,7 +6,8 @@ import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import NotFound from './pages/NotFound'
 import ProtectedRoute from './components/ProtectedRoute'
-
+import Exercises from './pages/Exercises'
+import CreateExercise from './pages/CreateExercise'
 
 function App() {
 
@@ -40,6 +41,22 @@ function App() {
             <Dashboard />
           </ProtectedRoute>
         } />
+
+        {/* Ruta protegida para ejercicios */}
+        <Route
+          path="/exercises" element={
+          <ProtectedRoute>
+            <Exercises />
+          </ProtectedRoute>
+          } />
+
+        <Route
+          path="/create-exercise" element={
+          <ProtectedRoute>
+            <CreateExercise />
+          </ProtectedRoute>
+          } />
+
       </Routes>
 
     </BrowserRouter>

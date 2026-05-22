@@ -18,15 +18,16 @@ return new class extends Migration
             $table->foreignId('parent_exercise_id')->nullable()->constrained('exercises')->nullOnDelete();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->string('image')->nullable();
-            $table->integer('duration');
-            $table->integer('rest')->nullable();
-            $table->integer('repetitions');
-            $table->integer('sets');
-            $table->string('muscle_group');
-            $table->string('muscle_area');
-            $table->string('weight')->nullable();
             $table->text('observations')->nullable();
+            $table->string('image')->nullable();
+            $table->integer('duration')->default(0);
+            $table->integer('rest')->nullable()->default(0);
+            $table->integer('repetitions')->default(1);
+            $table->integer('sets')->default(1);
+            $table->string('muscle_group')->default('General');
+            $table->string('muscle_area')->default('General');
+            $table->string('weight')->nullable()->default('0');
+            $table->string('weight_unit')->default('kg');
             $table->boolean('is_official')->default(false);
             
             $table->timestamps();
