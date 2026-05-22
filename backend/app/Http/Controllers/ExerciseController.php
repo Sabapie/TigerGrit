@@ -23,8 +23,11 @@ class ExerciseController extends Controller
             'duration' => 'required|integer',
             'repetitions' => 'required|integer',
             'sets' => 'required|integer',
+            'rest' => 'required|integer',
             'muscle_group' => 'required',
-            'muscle_area' => 'required'
+            'muscle_area' => 'required',
+            'weight' => 'nullable|numeric',
+            'weight_unit' => 'required|string'
 
         ]);
 
@@ -41,6 +44,8 @@ class ExerciseController extends Controller
             'sets' => $request->sets,
             'muscle_group' => $request->muscle_group,
             'muscle_area' => $request->muscle_area,
+            'weight' => $request->weight,
+            'weight_unit' => $request->weight_unit,
             'observations' => $request->observations,
             'is_official' => false
 

@@ -21,6 +21,8 @@ class Exercise extends Model
         'sets',
         'muscle_group',
         'muscle_area',
+        'weight',
+        'weight_unit',
         'observations',
         'is_official'
         
