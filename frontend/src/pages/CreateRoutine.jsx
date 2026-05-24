@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import Button from '../components/ui/Button'
+import  Input from '../components/ui/Input'
 
 function CreateRoutine() {
 
@@ -96,7 +98,7 @@ function CreateRoutine() {
 
       <h1>Crear rutina</h1>
 
-      <input
+      < Input
         placeholder="Nombre rutina"
         value={name}
         onChange={(e) =>
@@ -119,7 +121,7 @@ function CreateRoutine() {
 
           <div key={exercise.id}>
 
-            <input
+            < Input
               type="checkbox"
               value={exercise.id}
 
@@ -155,9 +157,9 @@ function CreateRoutine() {
         ))
       }
 
-      <button onClick={createRoutine}>
+      <Button onClick={createRoutine}>
         Crear
-      </button>
+      </Button>
 
     </div>
   )

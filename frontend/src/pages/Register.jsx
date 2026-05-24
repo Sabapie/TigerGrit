@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import Button from '../components/ui/Button'
+import  Input from '../components/ui/Input'
 
 function Register() {
 
@@ -43,27 +45,27 @@ function Register() {
 
       <h1>Crear cuenta</h1>
 
-      <input
+      < Input
         type="text"
         placeholder="nombre"
         onChange={(e) => setName(e.target.value)}
       />
 
-      <input
+      < Input
         type="email"
         placeholder="email"
         onChange={(e) => setEmail(e.target.value)}
       />
 
-      <input
+      < Input
         type="password"
         placeholder="password"
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <button onClick={register}>
+      <Button onClick={register}>
         Crear cuenta
-      </button>
+      </Button>
 
     </div>
   )

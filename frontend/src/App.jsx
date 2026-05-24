@@ -1,4 +1,3 @@
-import './App.css'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
@@ -10,13 +9,14 @@ import Exercises from './pages/Exercises'
 import CreateExercise from './pages/CreateExercise'
 import CreateRoutine from './pages/CreateRoutine'
 import Routines from './pages/Routines'
+import Navbar from './components/layout/NavBar'
 
 function App() {
 
   return (
 
     <BrowserRouter>
-
+      <Navbar />
       <Routes>
 
         {/* Ruta para páginas no encontradas */}

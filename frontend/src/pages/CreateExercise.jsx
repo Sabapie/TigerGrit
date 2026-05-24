@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
+import Button from '../components/ui/Button'
+import  Input from '../components/ui/Input'
 
 const MUSCLE_GROUPS = { // Objeto para mapear grupos musculares a áreas musculares específicas
   'Pecho':    ['Pectoral superior', 'Pectoral medio', 'Pectoral inferior'],
@@ -63,17 +65,17 @@ function CreateExercise() {
 
       <h1>Crear ejercicio</h1>
 
-      <input
+      < Input
         placeholder="Nombre"
         onChange={(e) => setName(e.target.value)}
       />
 
-      <input
+      < Input
         placeholder="Descripción"
         onChange={(e) => setDescription(e.target.value)}
       />
 
-      <input
+      < Input
         placeholder="Observaciones"
         onChange={(e) => setObservations(e.target.value)}
       />
@@ -88,7 +90,7 @@ function CreateExercise() {
         />
       }
 
-      <input
+      < Input
         type="text"
         placeholder="URL imagen"
         value={image}
@@ -101,7 +103,7 @@ function CreateExercise() {
         }}
       />
 
-      <input
+      < Input
         type="number"
         min="0"
         value={duration}
@@ -110,7 +112,7 @@ function CreateExercise() {
         }
       />
 
-      <input
+      < Input
         type="number"
         min="1"
         value={repetitions}
@@ -119,7 +121,7 @@ function CreateExercise() {
         }
       />
 
-      <input
+      < Input
         type="number"
         min="1"
         value={sets}
@@ -128,7 +130,7 @@ function CreateExercise() {
         }
       />
 
-      <input
+      < Input
         type="number"
         min="0"
         value={rest}
@@ -137,7 +139,7 @@ function CreateExercise() {
         }
       />
 
-      <input
+      < Input
         type="number"
         min="0"
         step="0.5"
@@ -225,9 +227,9 @@ function CreateExercise() {
 
       </select>
 
-      <button onClick={createExercise}>
+      <Button onClick={createExercise}>
         Crear
-      </button>
+      </Button>
     </div>
   )
 }
