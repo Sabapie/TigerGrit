@@ -97,6 +97,21 @@ function Dashboard() {
             Crear ejercicio
         </button>
 
+      <Link to="/create-routine">
+
+      <button>
+        Crear rutina
+      </button>
+
+    </Link>
+
+    <Link to="/routines">
+
+      <button>
+        Ver rutinas
+      </button>
+
+    </Link>
     </Link>
 
     </div>

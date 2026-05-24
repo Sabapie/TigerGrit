@@ -12,19 +12,22 @@ function Exercises() {
   }, [])
 
   const getExercises = async () => {
-
     try {
+      const token = localStorage.getItem('token')
 
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/exercises` // Llama a la API para obtener los ejercicios
+        `${import.meta.env.VITE_API_URL}/exercises`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
       )
 
       setExercises(response.data)
 
     } catch (error) {
-
       console.error(error)
-
     }
   }
 

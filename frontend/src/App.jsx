@@ -8,6 +8,8 @@ import NotFound from './pages/NotFound'
 import ProtectedRoute from './components/ProtectedRoute'
 import Exercises from './pages/Exercises'
 import CreateExercise from './pages/CreateExercise'
+import CreateRoutine from './pages/CreateRoutine'
+import Routines from './pages/Routines'
 
 function App() {
 
@@ -48,15 +50,28 @@ function App() {
           <ProtectedRoute>
             <Exercises />
           </ProtectedRoute>
-          } />
+        } />
 
         <Route
           path="/create-exercise" element={
           <ProtectedRoute>
             <CreateExercise />
           </ProtectedRoute>
-          } />
+        } />
 
+        <Route
+          path="/create-routine" element={
+          <ProtectedRoute>
+            <CreateRoutine />
+          </ProtectedRoute>
+        } />          
+
+        <Route
+          path="/routines" element={
+          <ProtectedRoute>
+            <Routines />
+          </ProtectedRoute>
+        } />          
       </Routes>
 
     </BrowserRouter>

@@ -43,6 +43,6 @@ class Exercise extends Model
 
     public function routines()
     {
-        return $this->belongsToMany(Routine::class); // Relación con las rutinas a las que pertenece el ejercicio
+        return $this->belongsToMany(Routine::class, 'routine_exercise'); // Relación con las rutinas a las que pertenece el ejercicio
     }
 }
