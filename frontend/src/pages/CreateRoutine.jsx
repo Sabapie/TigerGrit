@@ -22,9 +22,18 @@ function CreateRoutine() {
 
     try {
 
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/exercises`
-      )
+    const token = localStorage.getItem('token')
+
+    const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/exercises`,
+            
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+        
+    )
 
       setExercises(response.data)
 

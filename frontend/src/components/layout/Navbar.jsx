@@ -15,7 +15,7 @@ function Navbar() {
 
   return (
 
-    <nav className="bg-gray-800 p-4 text-white flex justify-between items-center">
+    <nav className="bg-gray-800 p-4 text-white flex justify-between items-center absolute w-full">
 
       <Link to="/">
         Inicio
@@ -45,9 +45,14 @@ function Navbar() {
               Crear rutina
             </Link>
 
+            <Link to="/calendar">
+            Calendario
+            </Link>
+
             <button onClick={logout}>
               Logout
             </button>
+
 
           </>
         )

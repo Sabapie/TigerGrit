@@ -10,6 +10,7 @@ import CreateExercise from './pages/CreateExercise'
 import CreateRoutine from './pages/CreateRoutine'
 import Routines from './pages/Routines'
 import Navbar from './components/layout/NavBar'
+import CalendarPage from './pages/CalendarPage'
 
 function App() {
 
@@ -71,7 +72,14 @@ function App() {
           <ProtectedRoute>
             <Routines />
           </ProtectedRoute>
-        } />          
+        } />       
+
+        <Route
+          path="/calendar" element={
+          <ProtectedRoute>
+            <CalendarPage />
+          </ProtectedRoute>
+         } />    
       </Routes>
 
     </BrowserRouter>

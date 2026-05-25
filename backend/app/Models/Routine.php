@@ -27,4 +27,9 @@ class Routine extends Model
             ->withPivot('order')
             ->withTimestamps();
     }
+
+    public function scheduledRoutines()
+    {
+        return $this->hasMany(ScheduledRoutine::class); // Relación con las programaciones de esta rutina
+    }
 }
