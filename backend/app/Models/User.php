@@ -44,11 +44,16 @@ class User extends Authenticatable
 
     public function exercises()
     {
-        return $this->hasMany(Exercise::class);
+        return $this->hasMany(Exercise::class); // Relación con los ejercicios creados por el usuario
     }
 
     public function routines()
     {
-        return $this->hasMany(Routine::class);
+        return $this->hasMany(Routine::class); // Relación con las rutinas creadas por el usuario
+    }
+
+    public function scheduledRoutines()
+    {
+        return $this->hasMany(ScheduledRoutine::class); // Relación con las programaciones de rutinas del usuario
     }
 }

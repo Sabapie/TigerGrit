@@ -8,9 +8,14 @@ use Illuminate\Http\Request;
 class ExerciseController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
-        $exercises = Exercise::all();
+        $userId = $request->user()->id;
+
+        $exercises = Exercise::where(function ($query) use ($userId) {
+            $query->where('user_id', $userId)
+                ->orWhereNull('user_id');
+        })->get();
 
         return response()->json($exercises);
     }

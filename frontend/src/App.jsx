@@ -1,4 +1,3 @@
-import './App.css'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
@@ -8,13 +7,17 @@ import NotFound from './pages/NotFound'
 import ProtectedRoute from './components/ProtectedRoute'
 import Exercises from './pages/Exercises'
 import CreateExercise from './pages/CreateExercise'
+import CreateRoutine from './pages/CreateRoutine'
+import Routines from './pages/Routines'
+import Navbar from './components/layout/NavBar'
+import CalendarPage from './pages/CalendarPage'
 
 function App() {
 
   return (
 
     <BrowserRouter>
-
+      <Navbar />
       <Routes>
 
         {/* Ruta para páginas no encontradas */}
@@ -48,15 +51,35 @@ function App() {
           <ProtectedRoute>
             <Exercises />
           </ProtectedRoute>
-          } />
+        } />
 
         <Route
           path="/create-exercise" element={
           <ProtectedRoute>
             <CreateExercise />
           </ProtectedRoute>
-          } />
+        } />
 
+        <Route
+          path="/create-routine" element={
+          <ProtectedRoute>
+            <CreateRoutine />
+          </ProtectedRoute>
+        } />          
+
+        <Route
+          path="/routines" element={
+          <ProtectedRoute>
+            <Routines />
+          </ProtectedRoute>
+        } />       
+
+        <Route
+          path="/calendar" element={
+          <ProtectedRoute>
+            <CalendarPage />
+          </ProtectedRoute>
+         } />    
       </Routes>
 
     </BrowserRouter>

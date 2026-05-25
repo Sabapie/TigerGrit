@@ -7,9 +7,9 @@ function NotFound() {
     <div>
       <h1>404</h1>
       <p>La página que buscas no existe</p>
-      <button onClick={() => navigate('/login')}>
+      <Button onClick={() => navigate('/login')}>
         Volver al inicio
-      </button>
+      </Button>
     </div>
   )
 }

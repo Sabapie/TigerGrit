@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import Button from '../components/ui/Button'
+
 
 function Dashboard() {
 
@@ -79,24 +81,39 @@ function Dashboard() {
         <h2>Bienvenido {user.name}</h2>
       }
 
-      <button onClick={logout}>
+      <Button onClick={logout}>
         Cerrar sesión
-      </button>
+      </Button>
 
       <Link to="/exercises">
 
-        <button>
+        <Button>
           Ver ejercicios
-        </button>
+        </Button>
 
       </Link>
 
       <Link to="/create-exercise">
 
-        <button>
+        <Button>
             Crear ejercicio
-        </button>
+        </Button>
 
+      <Link to="/create-routine">
+
+      <Button>
+        Crear rutina
+      </Button>
+
+    </Link>
+
+    <Link to="/routines">
+
+      <Button>
+        Ver rutinas
+      </Button>
+
+    </Link>
     </Link>
 
     </div>
