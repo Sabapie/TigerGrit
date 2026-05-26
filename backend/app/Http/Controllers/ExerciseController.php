@@ -58,4 +58,13 @@ class ExerciseController extends Controller
 
         return response()->json($exercise, 201); // devuelve el ejercicio creado con un código de estado 201 (creado)
     }
+
+    public function delete(Exercise $exercise)
+    {
+        $exercise->delete();
+
+        return response()->json([
+            'message' => 'Ejercicio eliminado'
+        ]);
+    }
 }

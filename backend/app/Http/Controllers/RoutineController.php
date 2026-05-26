@@ -20,28 +20,37 @@ class RoutineController extends Controller
             );
         }
 
-        public function store(Request $request)
-        {
-            $request->validate([
+    public function store(Request $request)
+    {
+        $request->validate([
 
-                'name' => 'required'
+            'name' => 'required'
 
-            ]);
+        ]);
 
-            $routine = Routine::create([
+        $routine = Routine::create([
 
-                'user_id' =>
-                    $request->user()->id,
+            'user_id' =>
+                $request->user()->id,
 
-                'name' =>
-                    $request->name,
+            'name' =>
+                $request->name,
 
-                'description' =>
-                    $request->description
+            'description' =>
+                $request->description
 
-            ]);
+        ]);
 
-            return response()->json($routine, 201);
+        return response()->json($routine, 201);
+    }
+
+    public function delete(Routine $routine)
+    {
+        $routine->delete();
+
+        return response()->json([
+            'message' => 'Rutina eliminada'
+        ]);
     }
 
     public function attachExercise(Request $request, Routine $routine)

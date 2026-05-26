@@ -1,16 +1,21 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import RoutineCard from '../components/ui/RoutineCard'
+import RoutineModal from '../components/layout/RoutineModal'
 
 function Routines() {
 
-  const [routines, setRoutines] = useState([])
 
-  useEffect(() => {
+    const [selectedRoutine, setSelectedRoutine] = useState(null) // Estado para almacenar la rutina seleccionada
+    const [isModalOpen, setIsModalOpen] = useState(false) // Estado para controlar la visibilidad del modal
+    const [routines, setRoutines] = useState([])
 
-    getRoutines()
+    useEffect(() => {
 
-  }, [])
+        getRoutines()
 
+    }, [])
+    
   const getRoutines = async () => {
 
     const token = localStorage.getItem('token')
@@ -42,33 +47,38 @@ function Routines() {
 
     <div>
 
-      <h1>Mis rutinas</h1>
+    <h1>Mis rutinas</h1>
 
-      {
-        routines.map((routine) => (
+    {
+        routines.map((routine) => ( // Mapea cada rutina a un bloque de información
 
-          <div key={routine.id}>
-
-            <h2>{routine.name}</h2>
-
-            <h3>Ejercicios:</h3>
-
-            {
-              routine.exercises.map((exercise) => (
-
-                <p key={exercise.id}>
-
-                  {exercise.name}
-
-                </p>
-
-              ))
-            }
-
-          </div>
+        <RoutineCard
+            key={routine.id}
+            routine={routine} 
+            onSelect={() => {
+                setSelectedRoutine(routine)
+                setIsModalOpen(true)
+            }}
+        />
 
         ))
-      }
+    }
+
+    <RoutineModal
+
+        routine={selectedRoutine}
+
+        isOpen={isModalOpen}
+
+        onClose={() => // Cierra el modal y limpia la rutina seleccionada
+            setIsModalOpen(false)
+        }
+        onDelete={() => { // Función que se ejecuta después de eliminar una rutina
+            getRoutines()
+            setIsModalOpen(false)
+            setSelectedRoutine(null)
+        }}
+    />
 
     </div>
   )

@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import ExerciseCard from '../components/ui/ExerciseCard'
+import ExerciseModal from '../components/layout/ExerciseModal'
 
 function Exercises() {
 
+  const [selectedExercise, setSelectedExercise] = useState(null) // Estado para almacenar el ejercicio seleccionado
+  const [isModalOpen, setIsModalOpen] = useState(false) // Estado para controlar la visibilidad del modal
   const [exercises, setExercises] = useState([])
 
   useEffect(() => {
@@ -40,32 +44,32 @@ function Exercises() {
       {
         exercises.map((exercise) => ( // Mapea cada ejercicio a un bloque de información
 
-          <div key={exercise.id}>
-
-            <h2>{exercise.name}</h2>
-
-            <p>{exercise.description}</p>
-
-            <p>
-              Grupo muscular:
-              {exercise.muscle_group}
-            </p>
-
-            <p>
-              Series:
-              {exercise.sets}
-            </p>
-
-            <p>
-              Repeticiones:
-              {exercise.repetitions}
-            </p>
-
-          </div>
+        <ExerciseCard
+          key={exercise.id}
+          exercise={exercise}
+          onSelect={() => {
+            setSelectedExercise(exercise)
+            setIsModalOpen(true)
+          }}
+        />
 
         ))
       }
+      <ExerciseModal
 
+        exercise={selectedExercise}
+
+        isOpen={isModalOpen}
+
+        onClose={() => // Cierra el modal y limpia la rutina seleccionada
+          setIsModalOpen(false)
+        }
+        onDelete={() => { // Función que se ejecuta después de eliminar una rutina
+          getExercises()
+          setIsModalOpen(false)
+          setSelectedExercise(null)
+        }}
+    />
     </div>
   )
 }
