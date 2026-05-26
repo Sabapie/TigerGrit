@@ -25,4 +25,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/calendar/{scheduledRoutine}', [ScheduledRoutineController::class, 'delete']);
     Route::delete('/routines/{routine}', [RoutineController::class, 'delete']);
     Route::delete('/exercises/{exercise}', [ExerciseController::class, 'delete']);
+    Route::put('/exercises/{exercise}', [ExerciseController::class, 'update']);
+    Route::get('/exercises/{exercise}', [ExerciseController::class, 'show']);
+    Route::post('/routines/{routine}/sync-exercises', [RoutineController::class, 'syncExercises']);
+    Route::get('/routines/{routine}', [RoutineController::class, 'show']);
+    Route::put('/routines/{routine}', [RoutineController::class, 'update']);
 });

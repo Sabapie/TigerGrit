@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class ScheduledRoutine extends Model
 {
     //
@@ -24,5 +25,5 @@ class ScheduledRoutine extends Model
     {
         return $this->belongsTo(Routine::class);
     }
-    
+
 }

@@ -1,20 +1,70 @@
 import { useEffect, useState } from 'react'
+import { useParams, Link, useNavigate} from 'react-router-dom' // Hook para obtener parámetros de la URL
 import axios from 'axios'
 import Button from '../components/ui/Button'
 import  Input from '../components/ui/Input'
 
-function CreateRoutine() {
+function RoutineForm() {
 
   const [description, setDescription] = useState('')
   const [exercises, setExercises] = useState([])
   const [selectedExercises, setSelectedExercises] = useState([])
   const [name, setName] = useState('')
 
+  const { id } = useParams()
+  const navigate = useNavigate()
+
   useEffect(() => {
-
-    getExercises()
-
+    init()
   }, [])
+
+  const init = async () => {
+    await getExercises()  // Espera a que carguen los ejercicios
+    if (id) {
+      await getRoutine()  // Carga la rutina con los checks
+    }
+  }
+
+  const getRoutine = async () => { // Llama a la API para obtener los datos de la rutina seleccionada
+
+    const token = localStorage.getItem('token')
+
+    try {
+
+      const response = await axios.get(
+
+        `${import.meta.env.VITE_API_URL}/routines/${id}`,
+
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+
+      )
+
+      const routine = response.data
+
+      setName(routine.name)
+
+      setDescription(
+        routine.description || ''
+      )
+
+      setSelectedExercises(
+
+        routine.exercises.map(
+          exercise => exercise.id
+        )
+
+      )
+
+    } catch (error) {
+
+      console.error(error)
+
+    }
+  }
 
   const getExercises = async () => {
 
@@ -44,44 +94,48 @@ function CreateRoutine() {
     }
   }
 
-  const createRoutine = async () => {
+  const saveRoutine = async () => {
 
     const token = localStorage.getItem('token')
 
     try {
 
-      // Crear rutina
+      let routineResponse
 
-      const routineResponse = await axios.post(
+      const data = {
 
-        `${import.meta.env.VITE_API_URL}/routines`,
+        name,
+        description
 
-        {
-          name,
-          description
-        },
+      }
 
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
+      if (id) {
 
-      )
+        // EDITAR
 
-      const routineId = routineResponse.data.id
+        routineResponse = await axios.put(
 
-      // Añadir ejercicios
+          `${import.meta.env.VITE_API_URL}/routines/${id}`,
 
-      for (const exerciseId of selectedExercises) {
-
-        await axios.post(
-
-          `${import.meta.env.VITE_API_URL}/routines/${routineId}/exercises`,
+          data,
 
           {
-            exercise_id: exerciseId
-          },
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+
+        )
+
+      } else {
+
+        // CREAR
+
+        routineResponse = await axios.post(
+
+          `${import.meta.env.VITE_API_URL}/routines`,
+
+          data,
 
           {
             headers: {
@@ -92,7 +146,36 @@ function CreateRoutine() {
         )
       }
 
-      alert('Rutina creada')
+      const routineId =
+        routineResponse.data.id
+
+      // sincronizar ejercicios
+
+      await axios.post(
+
+        `${import.meta.env.VITE_API_URL}/routines/${routineId}/sync-exercises`,
+
+        {
+          exercises: selectedExercises
+        },
+
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+
+      )
+
+      alert(
+
+        id
+          ? 'Rutina actualizada'
+          : 'Rutina creada'
+
+      )
+
+      navigate('/routines')
 
     } catch (error) {
 
@@ -100,7 +183,6 @@ function CreateRoutine() {
 
     }
   }
-
   return (
 
     <div>
@@ -133,6 +215,7 @@ function CreateRoutine() {
             < Input
               type="checkbox"
               value={exercise.id}
+              checked={selectedExercises.includes(Number(exercise.id))}
 
               onChange={(e) => {
 
@@ -140,10 +223,16 @@ function CreateRoutine() {
 
                 if (e.target.checked) {
 
-                  setSelectedExercises([
-                    ...selectedExercises,
-                    id
-                  ])
+                    setSelectedExercises([
+
+                      ...new Set([
+
+                        ...selectedExercises,
+                        id
+
+                      ])
+
+                    ])
 
                 } else {
 
@@ -165,13 +254,18 @@ function CreateRoutine() {
 
         ))
       }
+    <Button onClick={saveRoutine}>
 
-      <Button onClick={createRoutine}>
-        Crear
-      </Button>
+      {
+        id
+          ? 'Actualizar'
+          : 'Crear'
+      }
+
+    </Button>
 
     </div>
   )
 }
 
-export default CreateRoutine
+export default RoutineForm

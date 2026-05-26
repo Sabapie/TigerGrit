@@ -37,12 +37,12 @@ function Navbar() {
               Rutinas
             </Link>
 
-            <Link to="/create-exercise">
-              Crear ejercicio
+            <Link to="/exercise-form">
+              Crear ejercicios
             </Link>
 
-            <Link to="/create-routine">
-              Crear rutina
+            <Link to="/routine-form">
+              Crear rutinas
             </Link>
 
             <Link to="/calendar">

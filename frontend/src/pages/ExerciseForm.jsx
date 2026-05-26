@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useParams, Link, useNavigate} from 'react-router-dom' // Hook para obtener parámetros de la URL
 import axios from 'axios'
 import Button from '../components/ui/Button'
 import  Input from '../components/ui/Input'
+
 
 const MUSCLE_GROUPS = { // Objeto para mapear grupos musculares a áreas musculares específicas
   'Pecho':    ['Pectoral superior', 'Pectoral medio', 'Pectoral inferior'],
@@ -15,7 +17,7 @@ const MUSCLE_GROUPS = { // Objeto para mapear grupos musculares a áreas muscula
   'General':  ['Cardio'],
 }
 
-function CreateExercise() {
+function ExerciseForm() {
 
   // Estados para cada campo del formulario
   const [name, setName] = useState('')
@@ -32,30 +34,130 @@ function CreateExercise() {
   const [muscleGroup, setMuscleGroup] = useState('')
   const [muscleArea, setMuscleArea] = useState('')
 
-  const createExercise = async () => {
+  const { id } = useParams() // Obtiene el ID de la rutina de los parámetros de la URL
+  const navigate = useNavigate()
+
+  useEffect(() => {
+
+    if (id) {
+
+      getExercise()
+
+    }
+
+  }, [])
+
+  const getExercise = async () => { // Llama a la API para obtener los datos de la rutina seleccionada
+
     const token = localStorage.getItem('token')
+
     try {
-      await axios.post(
-        `${import.meta.env.VITE_API_URL}/exercises`,
+
+      const response = await axios.get(
+
+        `${import.meta.env.VITE_API_URL}/exercises/${id}`,
+
         {
-          name,
-          image: image || null,
-          description: description || null,
-          observations: observations || null,
-          duration,
-          repetitions,
-          sets,
-          weight: weight || 0,
-          weight_unit: weightUnit,
-          rest,
-          muscle_group: muscleGroup,
-          muscle_area: muscleArea,
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+
       )
-      alert('Ejercicio creado correctamente')
+
+      const exercise = response.data
+
+      setName(exercise.name)
+      setDescription(exercise.description || '')
+      setObservations(exercise.observations || '')
+      setImage(exercise.image || '')
+      setDuration(exercise.duration)
+      setRest(exercise.rest)
+      setRepetitions(exercise.repetitions)
+      setSets(exercise.sets)
+      setWeight(exercise.weight)
+      setImagePreview(exercise.image || '') // carga la preview de la imagen
+      setWeightUnit(exercise.weight_unit)
+      setMuscleGroup(exercise.muscle_group)
+      setMuscleArea(exercise.muscle_area)
+
     } catch (error) {
+
       console.error(error)
+
+    }
+  }
+
+  const saveExercise = async () => {
+
+    const token = localStorage.getItem('token')
+
+    const data = {
+
+      name,
+      image: image || null,
+      description: description || null,
+      observations: observations || null,
+      duration,
+      repetitions,
+      sets,
+      weight: weight || 0,
+      weight_unit: weightUnit,
+      rest,
+      muscle_group: muscleGroup,
+      muscle_area: muscleArea,
+
+    }
+
+    try {
+
+      if (id) {
+
+        // EDITAR
+
+        await axios.put(
+
+          `${import.meta.env.VITE_API_URL}/exercises/${id}`,
+
+          data,
+
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+
+        )
+
+        alert('Ejercicio actualizado')
+        navigate('/exercises')
+
+      } else {
+
+        // CREAR
+
+        await axios.post(
+
+          `${import.meta.env.VITE_API_URL}/exercises`,
+
+          data,
+
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+
+        )
+
+        alert('Ejercicio creado')
+        navigate('/exercises')
+      }
+
+    } catch (error) {
+
+      console.error(error)
+
     }
   }
 
@@ -68,16 +170,19 @@ function CreateExercise() {
       < Input
         placeholder="Nombre"
         onChange={(e) => setName(e.target.value)}
+        value={name}
       />
 
       < Input
         placeholder="Descripción"
         onChange={(e) => setDescription(e.target.value)}
+        value={description}
       />
 
       < Input
         placeholder="Observaciones"
         onChange={(e) => setObservations(e.target.value)}
+        value={observations}
       />
 
       {
@@ -150,10 +255,10 @@ function CreateExercise() {
       />
 
       <select
-        value={weightUnit}
         onChange={(e) =>
           setWeightUnit(e.target.value)
         }
+        value={weightUnit}
       >
 
         <option value="kg">
@@ -227,11 +332,17 @@ function CreateExercise() {
 
       </select>
 
-      <Button onClick={createExercise}>
-        Crear
+      <Button onClick={saveExercise}>
+
+        {
+          id
+            ? 'Actualizar'
+            : 'Crear'
+        }
+
       </Button>
     </div>
   )
 }
 
-export default CreateExercise
+export default ExerciseForm

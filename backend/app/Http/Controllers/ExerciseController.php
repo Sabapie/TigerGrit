@@ -59,6 +59,45 @@ class ExerciseController extends Controller
         return response()->json($exercise, 201); // devuelve el ejercicio creado con un código de estado 201 (creado)
     }
 
+    public function show(Exercise $exercise)
+    {
+        $userId = $request->user()->id;
+
+        $exercises = Exercise::where(function ($query) use ($userId) {
+            $query->where('user_id', $userId)
+                ->orWhereNull('user_id');
+        })->get();
+
+        return response()->json($exercises);
+    }
+
+    public function update(Request $request, Exercise $exercise)
+    {
+        $request->validate([
+
+            'name' => 'required',
+            'duration' => 'required|integer',
+            'repetitions' => 'required|integer',
+            'sets' => 'required|integer',
+            'rest' => 'required|integer',
+            'muscle_group' => 'required',
+            'muscle_area' => 'required',
+            'weight' => 'nullable|numeric',
+            'weight_unit' => 'required|string'
+
+        ]);
+
+        $exercise->update(
+
+            $request->all()
+
+        );
+
+        return response()->json(
+            $exercise
+        );
+    }
+
     public function delete(Exercise $exercise)
     {
         $exercise->delete();

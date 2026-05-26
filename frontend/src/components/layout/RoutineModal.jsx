@@ -1,8 +1,11 @@
 import Modal from './Modal'
 import RutineCard from '../ui/RoutineCard'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 function RoutineModal({routine, isOpen, onClose, onDelete}) {
+
+    const navigate = useNavigate()
 
     async function deleteRoutine() {
         const token = localStorage.getItem('token')
@@ -46,7 +49,7 @@ function RoutineModal({routine, isOpen, onClose, onDelete}) {
             🗑️
             </button>
             <button
-            // onClick={() => handleDelete(routine.id)}
+            onClick={() => navigate(`/routine-form/${routine.id}`)}
             className=" absolute top-4 right-16 text-white"
             >
             ✏️
