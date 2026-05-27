@@ -23,7 +23,7 @@ function ExerciseForm() {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [observations, setObservations] = useState('')
-  const [image, setImage] = useState('')
+  const [image, setImage] = useState(null)
   const [imagePreview, setImagePreview] = useState(null)
   const [duration, setDuration] = useState(60)
   const [rest, setRest] = useState(60)
@@ -76,7 +76,11 @@ function ExerciseForm() {
       setRepetitions(exercise.repetitions)
       setSets(exercise.sets)
       setWeight(exercise.weight)
-      setImagePreview(exercise.image || '') // carga la preview de la imagen
+      setImagePreview(  // carga la preview de la imagen
+        exercise.image
+          ? `http://localhost/GitHub/TigerGrit/backend/public/storage/${exercise.image}`
+          : null
+      ) 
       setWeightUnit(exercise.weight_unit)
       setMuscleGroup(exercise.muscle_group)
       setMuscleArea(exercise.muscle_area)
@@ -92,22 +96,21 @@ function ExerciseForm() {
 
     const token = localStorage.getItem('token')
 
-    const data = {
+    const data = new FormData() // Usamos FormData para enviar archivos
 
-      name,
-      image: image || null,
-      description: description || null,
-      observations: observations || null,
-      duration,
-      repetitions,
-      sets,
-      weight: weight || 0,
-      weight_unit: weightUnit,
-      rest,
-      muscle_group: muscleGroup,
-      muscle_area: muscleArea,
+    data.append('name', name)
+    data.append('image', image || null)
+    data.append('description', description || null)
+    data.append('observations', observations || null)
+    data.append('duration', duration)
+    data.append('repetitions', repetitions)
+    data.append('sets', sets)
+    data.append('weight', weight || 0)
+    data.append('weight_unit', weightUnit)
+    data.append('rest', rest)
+    data.append('muscle_group', muscleGroup)
+    data.append('muscle_area', muscleArea)
 
-    }
 
     try {
 
@@ -123,7 +126,8 @@ function ExerciseForm() {
 
           {
             headers: {
-              Authorization: `Bearer ${token}`
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'multipart/form-data'
             }
           }
 
@@ -144,7 +148,8 @@ function ExerciseForm() {
 
           {
             headers: {
-              Authorization: `Bearer ${token}`
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'multipart/form-data'
             }
           }
 
@@ -187,24 +192,28 @@ function ExerciseForm() {
 
       {
         imagePreview &&
-
         <img
           src={imagePreview}
-          alt="preview"
-          width="200"
+          alt="Preview"
+          style={{ width: '200px', height: '200px', objectFit: 'cover' }}
         />
       }
 
-      < Input
-        type="text"
-        placeholder="URL imagen"
-        value={image}
+      <Input
+        type="file"
+        accept="image/*"
         onChange={(e) => {
 
-          setImage(e.target.value)
+          const file = e.target.files[0]
 
-          setImagePreview(e.target.value)
+          setImage(file)
 
+          if (file) {
+
+            setImagePreview(
+              URL.createObjectURL(file)
+            )
+          }
         }}
       />
 
