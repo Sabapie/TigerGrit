@@ -93,19 +93,21 @@ function Dashboard() {
 
       </Link>
 
-      <Link to="/create-exercise">
+      <Link to="/exercise-form">
 
         <Button>
             Crear ejercicio
         </Button>
 
-      <Link to="/create-routine">
+      </Link>
 
-      <Button>
-        Crear rutina
-      </Button>
+      <Link to="/routine-form">
 
-    </Link>
+        <Button>
+          Crear rutina
+        </Button>
+
+      </Link>
 
     <Link to="/routines">
 
@@ -113,7 +115,6 @@ function Dashboard() {
         Ver rutinas
       </Button>
 
-    </Link>
     </Link>
 
     </div>

@@ -15,7 +15,7 @@ function Navbar() {
 
   return (
 
-    <nav className="bg-gray-800 p-4 text-white flex justify-between items-center absolute w-full">
+    <nav className="bg-gray-800 p-4 text-white flex justify-between items-center w-full">
 
       <Link to="/">
         Inicio
@@ -37,12 +37,12 @@ function Navbar() {
               Rutinas
             </Link>
 
-            <Link to="/create-exercise">
-              Crear ejercicio
+            <Link to="/exercise-form">
+              Crear ejercicios
             </Link>
 
-            <Link to="/create-routine">
-              Crear rutina
+            <Link to="/routine-form">
+              Crear rutinas
             </Link>
 
             <Link to="/calendar">

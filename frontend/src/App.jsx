@@ -6,8 +6,8 @@ import Dashboard from './pages/Dashboard'
 import NotFound from './pages/NotFound'
 import ProtectedRoute from './components/ProtectedRoute'
 import Exercises from './pages/Exercises'
-import CreateExercise from './pages/CreateExercise'
-import CreateRoutine from './pages/CreateRoutine'
+import ExerciseForm from './pages/ExerciseForm'
+import RoutineForm from './pages/RoutineForm'
 import Routines from './pages/Routines'
 import Navbar from './components/layout/NavBar'
 import CalendarPage from './pages/CalendarPage'
@@ -54,18 +54,32 @@ function App() {
         } />
 
         <Route
-          path="/create-exercise" element={
+          path="/exercise-form" element={
           <ProtectedRoute>
-            <CreateExercise />
+            <ExerciseForm />
           </ProtectedRoute>
         } />
 
         <Route
-          path="/create-routine" element={
+          path="/routine-form" element={
           <ProtectedRoute>
-            <CreateRoutine />
+            <RoutineForm />
           </ProtectedRoute>
-        } />          
+        } /> 
+
+        <Route
+          path="/exercise-form/:id" element={
+          <ProtectedRoute>
+            <ExerciseForm />
+          </ProtectedRoute>
+        } />
+
+        <Route
+          path="/routine-form/:id" element={
+          <ProtectedRoute>
+            <RoutineForm />
+          </ProtectedRoute>
+        } />            
 
         <Route
           path="/routines" element={
