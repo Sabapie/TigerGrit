@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate} from 'react-router-dom' // Hook para obte
 import axios from 'axios'
 import Button from '../components/ui/Button'
 import  Input from '../components/ui/Input'
+import FormField from '../components/ui/FormField'
 
 function RoutineForm() {
 
@@ -94,7 +95,21 @@ function RoutineForm() {
     }
   }
 
+  const [errors, setErrors] = useState({})
+  const [submitted, setSubmitted] = useState(false) // Control de errores
+
+  const validate = () => {
+    const newErrors = {}
+    if (!name) newErrors.name = 'El nombre es obligatorio'
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
   const saveRoutine = async () => {
+
+    setSubmitted(true)
+
+    if (!validate()) return
 
     const token = localStorage.getItem('token')
 
@@ -185,86 +200,74 @@ function RoutineForm() {
   }
   return (
 
-    <div>
+    <main className="min-h-screen flex justify-center px-4 py-8 font-sans">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-2xl flex flex-col gap-5">
 
-      <h1>Crear rutina</h1>
+        <h1>Crear rutina</h1>
 
-      < Input
-        placeholder="Nombre rutina"
-        value={name}
-        onChange={(e) =>
-          setName(e.target.value)
-        }
-      />
+        <FormField label="Nombre rutina*" value={name} placeholder="Nombre de la rutina" onChange={(e) => setName(e.target.value)} error={submitted ? errors.name : ''}/>
+        <FormField label="Descripción" value={description} placeholder="Descripción" onChange={(e) => setDescription(e.target.value)} />
 
-      <textarea
-        placeholder="Descripción"
-        value={description}
-        onChange={(e) =>
-          setDescription(e.target.value)
-        }
-      />
+        <h2>Ejercicios</h2>
 
-      <h2>Ejercicios</h2>
+        {
+          exercises.map((exercise) => (
 
-      {
-        exercises.map((exercise) => (
+            <div key={exercise.id}>
 
-          <div key={exercise.id}>
+              < Input
+                type="checkbox"
+                value={exercise.id}
+                checked={selectedExercises.includes(Number(exercise.id))}
 
-            < Input
-              type="checkbox"
-              value={exercise.id}
-              checked={selectedExercises.includes(Number(exercise.id))}
+                onChange={(e) => {
 
-              onChange={(e) => {
+                  const id = Number(e.target.value)
 
-                const id = Number(e.target.value)
+                  if (e.target.checked) {
 
-                if (e.target.checked) {
+                      setSelectedExercises([
 
-                    setSelectedExercises([
+                        ...new Set([
 
-                      ...new Set([
+                          ...selectedExercises,
+                          id
 
-                        ...selectedExercises,
-                        id
+                        ])
 
                       ])
 
-                    ])
+                  } else {
 
-                } else {
+                    setSelectedExercises(
 
-                  setSelectedExercises(
+                      selectedExercises.filter(
+                        exerciseId =>
+                          exerciseId !== id
+                      )
 
-                    selectedExercises.filter(
-                      exerciseId =>
-                        exerciseId !== id
                     )
+                  }
+                }}
+              />
 
-                  )
-                }
-              }}
-            />
+              {exercise.name}
 
-            {exercise.name}
+            </div>
 
-          </div>
+          ))
+        }
+      <Button onClick={saveRoutine}>
 
-        ))
-      }
-    <Button onClick={saveRoutine}>
+        {
+          id
+            ? 'Actualizar'
+            : 'Crear'
+        }
 
-      {
-        id
-          ? 'Actualizar'
-          : 'Crear'
-      }
-
-    </Button>
-
-    </div>
+      </Button>
+      </div>
+    </main>
   )
 }
 

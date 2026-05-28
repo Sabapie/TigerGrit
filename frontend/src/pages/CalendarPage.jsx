@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import Calendar from 'react-calendar'
-import 'react-calendar/dist/Calendar.css'
 import { useEffect } from 'react'
 import axios from 'axios'
 import Button from '../components/ui/Button'
+import CalendarView from '../components/ui/Calendar'
 
 function CalendarPage() {
 
@@ -147,94 +146,56 @@ function CalendarPage() {
 
   return (
 
-    <div>
-
-      <h1>Calendario</h1>
-
-      <Calendar // calendario modificado para mostrar las rutinas programadas
-        onChange={setDate}
-
-        value={date}
-
-        tileContent={({ date }) => {
-
-          const formattedDate =
-            date.toISOString().split('T')[0]
-
-          const routinesForDay =
-            scheduledRoutines.filter(
-
-              (routine) =>
-                routine.scheduled_date === formattedDate
-
-            )
-
-          return (
-
-            <div>
-
-              {
-                routinesForDay.map((routine) => (
-
-                  <p
-                    key={routine.id}
-                    className="text-xs text-blue-500"
-                  >
-
-                    {routine.routine.name}
-
-                  </p>
-
-                ))
-              }
-
-            </div>
-
-          )
-        }}
+    <main className="flex flex-col items-center px-6 gap-6">
+      <CalendarView
+        date={date}
+        setDate={setDate}
+        scheduledRoutines={scheduledRoutines}
       />
 
-      <p>
-        Fecha seleccionada:
-        {date.toDateString()}
-      </p>
+      
+      <div className='flex flex-row flex-wrap items-center gap-8'>
+        <p>
+          Fecha seleccionada:
+          {date.toDateString()}
+        </p>
+        <select
+          value={selectedRoutine}
+          onChange={(e) =>
+            setSelectedRoutine(e.target.value)
+          }
+        >
 
-      <select
-        value={selectedRoutine}
-        onChange={(e) =>
-          setSelectedRoutine(e.target.value)
-        }
-      >
+          <option value="">
+            Selecciona rutina
+          </option>
 
-        <option value="">
-          Selecciona rutina
-        </option>
+          {
+            routines.map((routine) => (
 
-        {
-          routines.map((routine) => (
+              <option
+                key={routine.id}
+                value={routine.id}
+              >
 
-            <option
-              key={routine.id}
-              value={routine.id}
-            >
+                {routine.name}
 
-              {routine.name}
+              </option>
 
-            </option>
+            ))
+          }
 
-          ))
-        }
+        </select>
 
-      </select>
+        <Button onClick={assignRoutine} variant='primary'>
+          Añadir rutina
+        </Button>
 
-      <Button onClick={assignRoutine}>
-        Añadir rutina
-      </Button>
-
-      <Button onClick={deleteRoutine}>
-        Eliminar rutina
-      </Button>
-    </div>
+        <Button onClick={deleteRoutine} variant='primary'>
+          Eliminar rutina
+        </Button>
+      </div>
+    </main>
   )
 }
 
