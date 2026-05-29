@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import ExerciseCard from '../components/ui/ExerciseCard'
 import ExerciseModal from '../components/layout/ExerciseModal'
+import ExerciseFilter from '../components/ui/Filter'
 
 function Exercises() {
 
@@ -35,42 +36,57 @@ function Exercises() {
     }
   }
 
+  // Filtro 
+  const [filteredExercises, setFilteredExercises] = useState([])
+
+    useEffect(() => {
+      setFilteredExercises(exercises)
+    }, [exercises])
+
+
   return (
 
-    <div>
+    <main className="min-h-screen flex flex-col px-4 py-8 font-sans items-center">
 
-      <h1>Ejercicios</h1>
+      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-[1500px] ">
+        <ExerciseFilter
+          exercises={exercises}
+          onFilter={setFilteredExercises}
+        />
+      </div>
 
-      {
-        exercises.map((exercise) => ( // Mapea cada ejercicio a un bloque de información
+      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-[1500px] grid grid-cols-3 gap-5">
+        {
+          filteredExercises.map(exercise => (
+            <ExerciseCard
+              key={exercise.id}
+              exercise={exercise}
+              onSelect={(exercise) => {
 
-        <ExerciseCard
-          key={exercise.id}
-          exercise={exercise}
-          onSelect={() => {
-            setSelectedExercise(exercise)
-            setIsModalOpen(true)
+                setSelectedExercise(exercise)
+                setIsModalOpen(true)
+
+              }}
+            />
+          ))
+        }
+        <ExerciseModal
+
+          exercise={selectedExercise}
+
+          isOpen={isModalOpen}
+
+          onClose={() => // Cierra el modal y limpia la rutina seleccionada
+            setIsModalOpen(false)
+          }
+          onDelete={() => { // Función que se ejecuta después de eliminar una rutina
+            getExercises()
+            setIsModalOpen(false)
+            setSelectedExercise(null)
           }}
         />
-
-        ))
-      }
-      <ExerciseModal
-
-        exercise={selectedExercise}
-
-        isOpen={isModalOpen}
-
-        onClose={() => // Cierra el modal y limpia la rutina seleccionada
-          setIsModalOpen(false)
-        }
-        onDelete={() => { // Función que se ejecuta después de eliminar una rutina
-          getExercises()
-          setIsModalOpen(false)
-          setSelectedExercise(null)
-        }}
-    />
-    </div>
+      </div>
+    </main>
   )
 }
 

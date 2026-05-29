@@ -1,11 +1,8 @@
 import Calendar from 'react-calendar'
 import '../styles/calendar.css'
+import RoutineCard from './RoutineCard'
 
-export default function CalendarView({
-  date,
-  setDate,
-  scheduledRoutines
-}) {
+export default function CalendarView({date, setDate, scheduledRoutines}) {
   return (
     <Calendar
       onChange={setDate}
@@ -23,7 +20,7 @@ export default function CalendarView({
             {routinesForDay.map((routine) => (
               <p
                 key={routine.id}
-                className="text-xs text-blue-500"
+                className="text-xs text-zinc-500"
               >
                 {routine.routine.name}
               </p>

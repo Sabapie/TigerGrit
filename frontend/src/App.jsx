@@ -11,13 +11,19 @@ import RoutineForm from './pages/RoutineForm'
 import Routines from './pages/Routines'
 import Navbar from './components/layout/NavBar'
 import CalendarPage from './pages/CalendarPage'
+import Header from './components/layout/Header'
+import Footer from './components/layout/Footer'
 
 function App() {
 
   return (
 
     <BrowserRouter>
+
+      <Header />
+
       <Navbar />
+
       <Routes>
 
         {/* Ruta para páginas no encontradas */}
@@ -95,6 +101,8 @@ function App() {
           </ProtectedRoute>
          } />    
       </Routes>
+
+      <Footer />
 
     </BrowserRouter>
   )

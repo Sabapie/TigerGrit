@@ -46,14 +46,9 @@ function ExerciseForm() {
   const handleImageFile = (e) => {
     const file = e.target.files[0]
     if (!file) return
-    const reader = new FileReader()
-    reader.onload = (ev) => {
-      setImagePreview(ev.target.result)
-      setImage(ev.target.result)
-    }
-    reader.readAsDataURL(file)
+    setImage(file)  // guarda el File original
+    setImagePreview(URL.createObjectURL(file))  // ←preview local sin base64
   }
-
   // Conversión de kg a lb y viceversa
   const KG_TO_LB = 2.20462;
   const LB_TO_KG = 1 / KG_TO_LB;
@@ -89,50 +84,39 @@ function ExerciseForm() {
 
   }, [])
 
-  const getExercise = async () => { // Llama a la API para obtener los datos de la rutina seleccionada
+  const getExercise = async () => { 
+  const token = localStorage.getItem('token')
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_URL}/exercises/${id}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    const exercise = response.data
 
-    const token = localStorage.getItem('token')
+    setName(exercise.name || '')
+    setDescription(exercise.description || '')
+    setObservations(exercise.observations || '')
+    setDuration(Number(exercise.duration) || 60)
+    setRest(Number(exercise.rest) || 0)
+    setRepetitions(Number(exercise.repetitions) || 10)
+    setSets(Number(exercise.sets) || 3)
+    setWeight(parseFloat(exercise.weight) || 0)
+    setWeightUnit(exercise.weight_unit || 'kg')
+    setMuscleGroup(exercise.muscle_group || '')
+    setMuscleArea(exercise.muscle_area || '')
 
-    try {
-
-      const response = await axios.get(
-
-        `${import.meta.env.VITE_API_URL}/exercises/${id}`,
-
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-
+    // Imagen almacenada
+    if (exercise.image) {
+      setImage(exercise.image)
+      setImagePreview(
+        `http://localhost/GitHub/TigerGrit/backend/public/storage/${exercise.image}`
       )
-
-      const exercise = response.data
-
-      setName(exercise.name)
-      setDescription(exercise.description || '')
-      setObservations(exercise.observations || '')
-      setImage(exercise.image || '')
-      setDuration(exercise.duration)
-      setRest(exercise.rest)
-      setRepetitions(exercise.repetitions)
-      setSets(exercise.sets)
-      setWeight(exercise.weight)
-      setImagePreview(  // carga la preview de la imagen
-        exercise.image
-          ? `http://localhost/GitHub/TigerGrit/backend/public/storage/${exercise.image}`
-          : null
-      ) 
-      setWeightUnit(exercise.weight_unit)
-      setMuscleGroup(exercise.muscle_group)
-      setMuscleArea(exercise.muscle_area)
-
-    } catch (error) {
-
-      console.error(error)
-
     }
+
+  } catch (error) {
+    console.error(error)
   }
+}
 
   const [errors, setErrors] = useState({})
   const [submitted, setSubmitted] = useState(false) // Control de errores
@@ -146,96 +130,64 @@ function ExerciseForm() {
     return Object.keys(newErrors).length === 0
   }
 
-  const saveExercise = async () => {
+const saveExercise = async () => {
+  setSubmitted(true)
+  if (!validate()) return
 
-    setSubmitted(true)
+  const token = localStorage.getItem('token')
+  const data = new FormData()
 
-    if (!validate()) return
+  if (id) data.append('_method', 'PUT')
 
-    const token = localStorage.getItem('token')
+  data.append('name', name)
+  data.append('description', description || '')
+  data.append('observations', observations || '')
+  data.append('duration', Number(duration))
+  data.append('repetitions', Number(repetitions))
+  data.append('sets', Number(sets))
+  data.append('weight', Number(weight) || 0)
+  data.append('weight_unit', weightUnit)
+  data.append('rest', Number(rest))
+  data.append('muscle_group', muscleGroup)
+  data.append('muscle_area', muscleArea)
+  if (image instanceof File) data.append('image', image)
 
-    const data = new FormData() // Usamos FormData para enviar archivos
-
-    data.append('name', name)
-    data.append('image', image || null)
-    data.append('description', description || null)
-    data.append('observations', observations || null)
-    data.append('duration', duration || 60)
-    data.append('repetitions', repetitions || 1)
-    data.append('sets', sets || 0)
-    data.append('weight', weight || 0)
-    data.append('weight_unit', weightUnit)
-    data.append('rest', rest)
-    data.append('muscle_group', muscleGroup)
-    data.append('muscle_area', muscleArea)
-
-
-    try {
-
-      if (id) {
-
-        // EDITAR
-
-        await axios.put(
-
-          `${import.meta.env.VITE_API_URL}/exercises/${id}`,
-
-          data,
-
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'multipart/form-data'
-            }
-          }
-
-        )
-
-        alert('Ejercicio actualizado')
-        navigate('/exercises')
-
-      } else {
-
-        // CREAR
-
-        await axios.post(
-
-          `${import.meta.env.VITE_API_URL}/exercises`,
-
-          data,
-
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'multipart/form-data'
-            }
-          }
-
-        )
-
-        alert('Ejercicio creado')
-        navigate('/exercises')
-      }
-
-    } catch (error) {
-
-      console.error(error)
-
-    }
+  try {
+    await axios.post(
+      id
+        ? `${import.meta.env.VITE_API_URL}/exercises/${id}`
+        : `${import.meta.env.VITE_API_URL}/exercises`,
+      data,
+      { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } }
+    )
+    alert(id ? 'Ejercicio actualizado' : 'Ejercicio creado')
+    navigate('/exercises')
+  } catch (error) {
+    console.error(error.response?.data)
   }
+}
 
 return (
-  <main className="min-h-screen flex justify-center px-4 py-8 font-sans">
-    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-2xl flex flex-col gap-5">
+<main className="min-h-screen flex flex-col px-4 py-8 font-sans items-center">
+    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-[1500px] flex flex-col gap-5">
 
-      <h1 className="text-white text-2xl font-semibold tracking-tight">Nuevo ejercicio</h1>
+      <h1 className="text-white text-2xl font-semibold tracking-tight">
+        {id ? 'Editar ejercicio' : 'Nuevo ejercicio'}
+      </h1>
+
+      {/* Aviso si es oficial */}
+      {id && (
+        <p className="text-xs text-tigergrit bg-tigergrit/10 px-3 py-1 rounded-full w-fit">
+          Al editar un ejercicio oficial se creara un ejercicio nuevo con los cambios
+        </p>
+      )}
 
       {/* IMAGEN */}
       <div className="flex gap-4 items-start">
         <div className="w-24 h-24 rounded-xl bg-zinc-800 border border-zinc-700 flex items-center justify-center shrink-0 overflow-hidden">
           {imagePreview
             ? <img src={imagePreview} alt="preview" className="w-full h-full object-cover" />
-            : <span className="text-zinc-500 text-xs text-center"><img src={placeholderImg} alt='Introduce imagen' className="grayscale opacity-30"></img></span>
+            : <span className="text-zinc-500 text-xs text-center"><img src={placeholderImg} alt='Introduce imagen' className="grayscale opacity-30" /></span>
           }
         </div>
         <div className="flex-1 flex flex-col flex-wrap gap-1">
@@ -269,6 +221,7 @@ return (
       <div className="flex flex-col gap-1">
         <FormField
           label="Nombre*"
+          value={name}
           placeholder="Nombre del ejercicio..."
           onChange={(e) => setName(e.target.value)}
           error={submitted ? errors.name : ''}
@@ -279,6 +232,7 @@ return (
       <div className="flex flex-col gap-1">
         <FormField
           label="Descripción"
+          value={description}
           placeholder="Descripción del ejercicio..."
           onChange={(e) => setDescription(e.target.value)}
         />
@@ -321,7 +275,7 @@ return (
         <NumberStepper label="Repeticiones" value={repetitions} onChange={setRepetitions} min={1} max={100} step={1}/>
         
         <div className="flex flex-col gap-1 flex-1 min-w-[120px]">
-          <NumberStepper label="Peso" value={weight.toFixed(2)} onChange={setWeight} min={0} max={995} step={step}/>
+          <NumberStepper label="Peso" value={Number(weight).toFixed(2)} onChange={setWeight} min={0} max={995} step={step}/>
           <div className="flex gap-1 mt-1">
             {['kg', 'lb'].map(u => (
               <button
@@ -330,7 +284,7 @@ return (
                 onClick={() => changeUnit(u)}
                 className={`flex-1 py-1 rounded-md text-xs border transition font-medium
                   ${weightUnit === u
-                    ? 'bg-tigergrit border-tigergrit text-zinc-900'
+                    ? 'bg-tigergrit border-tigergrit text-white'
                     : 'bg-transparent border-zinc-700 text-zinc-500 hover:text-white'
                   }`}
               >{u}</button>
@@ -343,6 +297,7 @@ return (
       <div className="flex flex-col gap-1">
         <label className="text-zinc-500 text-xs font-medium uppercase tracking-widest">Observaciones</label>
         <textarea
+          value={observations}
           className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-white text-sm outline-none focus:ring-2 focus:ring-tigergrit w-full resize-y min-h-[72px] font-sans"
           placeholder="Notas adicionales..."
           onChange={(e) => setObservations(e.target.value)}
@@ -353,7 +308,7 @@ return (
         onClick={saveExercise}
         variant='primary'    
       >
-        Crear ejercicio
+        {id ? 'Confirmar edición' : 'Crear ejercicio'}
       </Button>
 
     </div>

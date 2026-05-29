@@ -3,11 +3,17 @@ import { useEffect } from 'react'
 import axios from 'axios'
 import Button from '../components/ui/Button'
 import CalendarView from '../components/ui/Calendar'
+import RoutineCard from '../components/ui/RoutineCard'
+import RoutineModal from '../components/layout/RoutineModal'
+import ExerciseModal from '../components/layout/ExerciseModal'
+import ExerciseFilter from '../components/ui/Filter'
 
 function CalendarPage() {
 
   const [routines, setRoutines] = useState([])
-  const [selectedRoutine, setSelectedRoutine] = useState('')
+  const [selectedRoutineId, setSelectedRoutineId] = useState(null)
+  const [modalRoutine, setModalRoutine] = useState(null) // Estado para almacenar la rutina seleccionada
+  const [isModalOpen, setIsModalOpen] = useState(false) // Estado para controlar la visibilidad del modal
 
   useEffect(() => {
 
@@ -21,8 +27,15 @@ function CalendarPage() {
 
   }, [])
 
-  const getRoutines = async () => {
+  // Busqueda 
+  const [filteredRoutines, setFilteredRoutines] = useState([])
 
+  useEffect(() => {
+    setFilteredRoutines(routines)
+  }, [routines])
+
+  const getRoutines = async () => {
+  
   const token = localStorage.getItem('token')
 
     try {
@@ -60,7 +73,7 @@ function CalendarPage() {
         `${import.meta.env.VITE_API_URL}/calendar`,
 
         {
-          routine_id: selectedRoutine,
+          routine_id: selectedRoutineId,
 
           scheduled_date:
             date.toISOString().split('T')[0]
@@ -147,6 +160,8 @@ function CalendarPage() {
   return (
 
     <main className="flex flex-col items-center px-6 gap-6">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-[1500px] flex flex-col gap-5">
+
       <CalendarView
         date={date}
         setDate={setDate}
@@ -155,37 +170,53 @@ function CalendarPage() {
 
       
       <div className='flex flex-row flex-wrap items-center gap-8'>
-        <p>
+        {/* Informacion de la fecha seleccionada */}
+        {/* <p>
           Fecha seleccionada:
           {date.toDateString()}
-        </p>
-        <select
-          value={selectedRoutine}
-          onChange={(e) =>
-            setSelectedRoutine(e.target.value)
-          }
-        >
-
-          <option value="">
+        </p> */}
+        <div className="flex flex-col gap-3 w-full">
+          <p className="text-zinc-500 text-xs uppercase tracking-widest">
             Selecciona rutina
-          </option>
+          </p>
+          <ExerciseFilter
+            exercises={routines}
+            onFilter={setFilteredRoutines}
+            onlySearch
+          />
+          {/*Estilo del slider*/}
+          <div className="flex gap-3 overflow-x-auto pb-3 scroll-smooth snap-x snap-mandatory"
+            style={{ scrollbarWidth: 'thin', scrollbarColor: '#f46701 #27272a' }}
+          >
+            {filteredRoutines.map((routine) => {
+              const isSelected =
+                Number(selectedRoutineId) === Number(routine.id)
 
-          {
-            routines.map((routine) => (
-
-              <option
-                key={routine.id}
-                value={routine.id}
-              >
-
-                {routine.name}
-
-              </option>
-
-            ))
-          }
-
-        </select>
+                    return (
+                      <div
+                        key={routine.id}
+                        onClick={() => setSelectedRoutineId(routine.id)}
+                        onDoubleClick={() => {
+                          setModalRoutine(routine)
+                          setIsModalOpen(true)
+                        }}
+                        className={`
+                          relative shrink-0 w-48 cursor-pointer rounded-2xl border-2 transition
+                          ${isSelected
+                            ? 'border-tigergrit bg-zinc-800'
+                            : 'border-zinc-700 bg-zinc-900 hover:border-zinc-500'
+                          }
+                        `}
+                      >
+                        <RoutineCard
+                          routine={routine}
+                          compact
+                        />
+                      </div>
+                    )
+                  })}
+          </div>
+        </div>
 
         <Button onClick={assignRoutine} variant='primary'>
           Añadir rutina
@@ -194,6 +225,20 @@ function CalendarPage() {
         <Button onClick={deleteRoutine} variant='primary'>
           Eliminar rutina
         </Button>
+      </div>
+        <RoutineModal
+          routine={modalRoutine}
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false)
+            setModalRoutine(null)
+          }}
+          onDelete={() => {
+            getRoutines()
+            setIsModalOpen(false)
+            setModalRoutine(null)
+          }}
+        />
       </div>
     </main>
   )

@@ -4,6 +4,8 @@ import axios from 'axios'
 import Button from '../components/ui/Button'
 import  Input from '../components/ui/Input'
 import FormField from '../components/ui/FormField'
+import ExerciseCard from '../components/ui/ExerciseCard'
+import ExerciseFilter from '../components/ui/Filter'
 
 function RoutineForm() {
 
@@ -198,77 +200,125 @@ function RoutineForm() {
 
     }
   }
+  
+  // Filtro 
+  const [filteredExercises, setFilteredExercises] = useState([])
+    
+    useEffect(() => {
+      setFilteredExercises(exercises)
+    }, [exercises])
+
+
   return (
+  <main className="min-h-screen flex flex-col px-4 py-8 font-sans items-center">
+    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-[1500px] flex flex-col gap-5">
 
-    <main className="min-h-screen flex justify-center px-4 py-8 font-sans">
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-2xl flex flex-col gap-5">
+      <h1 className="text-white text-2xl font-semibold tracking-tight">
+        {id ? 'Editar rutina' : 'Crear rutina'}
+      </h1>
 
-        <h1>Crear rutina</h1>
+      <FormField
+        label="Nombre rutina*"
+        value={name}
+        placeholder="Nombre de la rutina"
+        onChange={(e) => setName(e.target.value)}
+        error={submitted ? errors.name : ''}
+      />
+      <FormField
+        label="Descripción"
+        value={description}
+        placeholder="Descripción"
+        onChange={(e) => setDescription(e.target.value)}
+        multiline
+      />
 
-        <FormField label="Nombre rutina*" value={name} placeholder="Nombre de la rutina" onChange={(e) => setName(e.target.value)} error={submitted ? errors.name : ''}/>
-        <FormField label="Descripción" value={description} placeholder="Descripción" onChange={(e) => setDescription(e.target.value)} />
+      {/* EJERCICIOS */}
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center justify-between">
+          <h2 className="text-white font-semibold text-lg">Ejercicios</h2>
+          <span className="text-zinc-500 text-sm">
+            {selectedExercises.length} seleccionados
+          </span>
+        </div>
+      <ExerciseFilter
+          exercises={exercises}
+          onFilter={setFilteredExercises}
+        />
+      </div>
+        {/* Slider */}
+        <div className="relative">
+          <div className="flex gap-3 overflow-x-auto pb-3 scroll-smooth snap-x snap-mandatory"
+            style={{ scrollbarWidth: 'thin', scrollbarColor: '#f46701 #27272a' }}
+          >
+            {filteredExercises.map((exercise) => {
+              const isSelected = selectedExercises.includes(Number(exercise.id))
+              return (
+                <div
+                  key={exercise.id}
+                  className="relative shrink-0 w-48 snap-start cursor-pointer"
+                  onClick={() => {
+                    const exId = Number(exercise.id)
+                    if (isSelected) {
+                      setSelectedExercises(selectedExercises.filter(i => i !== exId))
+                    } else {
+                      setSelectedExercises([...new Set([...selectedExercises, exId])])
+                    }
+                  }}
+                >
+                  {/* Checkbox visual */}
+                  <div className={`
+                    absolute top-2 left-2 z-10 w-5 h-5 rounded-md border-2 flex items-center justify-center transition
+                    ${isSelected
+                      ? 'bg-tigergrit border-tigergrit'
+                      : 'bg-zinc-900/70 border-zinc-600'
+                    }
+                  `}>
+                    {isSelected && (
+                      <svg className="w-3 h-3 text-zinc-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </div>
 
-        <h2>Ejercicios</h2>
+                  {/* Ring de selección */}
+                  <div className={`rounded-2xl overflow-hidden border-2 transition ${isSelected ? 'border-tigergrit' : 'border-transparent'}`}>
+                    <ExerciseCard
+                      exercise={exercise}
+                      onSelect={() => {}}
+                    />
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
 
-        {
-          exercises.map((exercise) => (
+        {/* Seleccionados como lista compacta */}
+        {selectedExercises.length > 0 && (
+          <div className="flex flex-col gap-2 mt-2">
+            <p className="text-zinc-500 text-xs uppercase tracking-widest">Seleccionados</p>
+            {exercises
+              .filter(ex => selectedExercises.includes(Number(ex.id)))
+              .map(ex => (
+                <ExerciseCard
+                  key={ex.id}
+                  exercise={ex}
+                  compact
+                  onSelect={() => {
+                    setSelectedExercises(selectedExercises.filter(i => i !== Number(ex.id)))
+                  }}
+                />
+              ))
+            }
+          </div>
+        )}
 
-            <div key={exercise.id}>
-
-              < Input
-                type="checkbox"
-                value={exercise.id}
-                checked={selectedExercises.includes(Number(exercise.id))}
-
-                onChange={(e) => {
-
-                  const id = Number(e.target.value)
-
-                  if (e.target.checked) {
-
-                      setSelectedExercises([
-
-                        ...new Set([
-
-                          ...selectedExercises,
-                          id
-
-                        ])
-
-                      ])
-
-                  } else {
-
-                    setSelectedExercises(
-
-                      selectedExercises.filter(
-                        exerciseId =>
-                          exerciseId !== id
-                      )
-
-                    )
-                  }
-                }}
-              />
-
-              {exercise.name}
-
-            </div>
-
-          ))
-        }
       <Button onClick={saveRoutine}>
-
-        {
-          id
-            ? 'Actualizar'
-            : 'Crear'
-        }
-
+        {id ? 'Actualizar' : 'Crear'}
       </Button>
       </div>
     </main>
-  )
+)
 }
 
 export default RoutineForm
