@@ -6,6 +6,8 @@ import FormField from '../components/ui/FormField'
 import SelectField from '../components/ui/SelectField'
 import DigitalClock from '../components/ui/DigitalClock'
 import NumberStepper from '../components/ui/NumberStepper'
+import ConfirmModal from '../components/layout/ConfirmationModal'
+import Modal from '../components/layout/Modal'
 
 import placeholderImg from '../assets/TigerGrit.png' // imagen placeholder
 import { useRef } from 'react' // Importa el boton para subir imagen
@@ -39,9 +41,11 @@ function ExerciseForm() {
   const [weightUnit, setWeightUnit] = useState('kg')
   const [muscleGroup, setMuscleGroup] = useState('')
   const [muscleArea, setMuscleArea] = useState('')
+  const [oficial, setOficial] = useState(false)
 
   const { id } = useParams() // Obtiene el ID de la rutina de los parámetros de la URL
   const navigate = useNavigate()
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false) //Modal para confirmar acción
 
   const handleImageFile = (e) => {
     const file = e.target.files[0]
@@ -104,6 +108,8 @@ function ExerciseForm() {
     setWeightUnit(exercise.weight_unit || 'kg')
     setMuscleGroup(exercise.muscle_group || '')
     setMuscleArea(exercise.muscle_area || '')
+    setOficial(exercise.is_official || false)
+
 
     // Imagen almacenada
     if (exercise.image) {
@@ -160,11 +166,15 @@ const saveExercise = async () => {
       data,
       { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } }
     )
-    alert(id ? 'Ejercicio actualizado' : 'Ejercicio creado')
     navigate('/exercises')
   } catch (error) {
     console.error(error.response?.data)
   }
+}
+
+//Funcion para cancelar el formulario
+const cancelForm = () => {
+  navigate("/exercises")
 }
 
 return (
@@ -176,11 +186,11 @@ return (
       </h1>
 
       {/* Aviso si es oficial */}
-      {id && (
-        <p className="text-xs text-tigergrit bg-tigergrit/10 px-3 py-1 rounded-full w-fit">
-          Al editar un ejercicio oficial se creara un ejercicio nuevo con los cambios
-        </p>
-      )}
+      {oficial ? <p 
+      className="text-xs text-tigergrit bg-tigergrit/10 px-3 py-1 rounded-full w-fit">
+        Al editar un ejercicio oficial se creara un ejercicio nuevo con los cambios 
+      </p> : ''}
+      
 
       {/* IMAGEN */}
       <div className="flex gap-4 items-start">
@@ -310,8 +320,27 @@ return (
       >
         {id ? 'Confirmar edición' : 'Crear ejercicio'}
       </Button>
+      <Button
+        onClick={() => setIsConfirmOpen(true)}
+        variant='secondary'    
+      >
+        {id ? 'Cancelar edición' : 'Volver'}
+      </Button>
+
 
     </div>
+
+    <ConfirmModal
+
+          isOpen={isConfirmOpen}
+          onClose={() => setIsConfirmOpen(false)}
+          onConfirm={() => {cancelForm() }}
+          title="Salir del formulario"
+          message="Si sales del formulario los datos introducidos desapareceran"
+          confirmText="Salir"
+          cancelText="Cancelar"
+      />
+
   </main>
 )
 }

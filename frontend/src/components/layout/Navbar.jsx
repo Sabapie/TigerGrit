@@ -4,9 +4,7 @@ import { useState } from 'react'
 function Navbar() {
 
   const navigate = useNavigate()
-
   const token = localStorage.getItem('token')
-
   const [isOpen, setIsOpen] = useState(false)
 
   const logout = () => {
@@ -25,21 +23,7 @@ function Navbar() {
 
         onClick={() => setIsOpen(!isOpen)}
 
-        className="
-          fixed
-          top-4
-          right-4
-          z-50
-          bg-tigergrit
-          text-black
-          w-12
-          h-12
-          rounded-xl
-          font-bold
-          text-xl
-          shadow-lg
-        "
-      >
+        className="fixed top-4 right-4 z-50 bg-tigergrit text-black w-12 h-12 rounded-xl font-bold text-xl shadow-lg">
 
         ☰
 
@@ -69,10 +53,16 @@ function Navbar() {
 
         {/* HEADER */}
         <div className="flex items-center justify-between mb-4">
-
+          <Link
+          to="/"
+          onClick={() => setIsOpen(false)}
+          className="text-zinc-300 hover:text-white transition"
+        >
           <h2 className="text-white text-2xl font-black">
             TigerGrit
           </h2>
+        </Link>
+
 
           <button
 
@@ -88,25 +78,9 @@ function Navbar() {
         </div>
 
         {/* LINKS */}
-        <Link
-          to="/"
-          onClick={() => setIsOpen(false)}
-          className="text-zinc-300 hover:text-white transition"
-        >
-          Inicio
-        </Link>
-
         {
           token && (
             <>
-
-              <Link
-                to="/dashboard"
-                onClick={() => setIsOpen(false)}
-                className="text-zinc-300 hover:text-white transition"
-              >
-                Dashboard
-              </Link>
 
               <Link
                 to="/exercises"
@@ -125,22 +99,6 @@ function Navbar() {
               </Link>
 
               <Link
-                to="/exercise-form"
-                onClick={() => setIsOpen(false)}
-                className="text-zinc-300 hover:text-white transition"
-              >
-                Crear ejercicios
-              </Link>
-
-              <Link
-                to="/routine-form"
-                onClick={() => setIsOpen(false)}
-                className="text-zinc-300 hover:text-white transition"
-              >
-                Crear rutinas
-              </Link>
-
-              <Link
                 to="/calendar"
                 onClick={() => setIsOpen(false)}
                 className="text-zinc-300 hover:text-white transition"
@@ -152,17 +110,7 @@ function Navbar() {
 
                 onClick={logout}
 
-                className="
-                  mt-auto
-                  bg-red-500
-                  hover:bg-red-600
-                  transition
-                  rounded-xl
-                  py-3
-                  text-white
-                  font-bold
-                "
-              >
+                className="mt-auto bg-red-500 hover:bg-red-600 transition rounded-xl py-3 text-white font-bold">
 
                 Logout
 

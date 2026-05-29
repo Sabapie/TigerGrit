@@ -87,7 +87,6 @@ function CalendarPage() {
 
       )
 
-      alert('Rutina programada')
       getScheduledRoutines()
 
     } catch (error) {
@@ -136,8 +135,7 @@ function CalendarPage() {
       (r) => r.scheduled_date === formattedDate
     )
 
-    if (!scheduled) {
-      alert('No hay rutina programada para esta fecha')
+    if (!scheduled) { // Si no hay rutina
       return
     }
 
@@ -149,7 +147,6 @@ function CalendarPage() {
         }
       )
 
-      alert('Rutina eliminada')
       getScheduledRoutines()
 
     } catch (error) {

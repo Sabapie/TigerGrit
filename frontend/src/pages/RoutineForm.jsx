@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react'
 import { useParams, Link, useNavigate} from 'react-router-dom' // Hook para obtener parámetros de la URL
 import axios from 'axios'
 import Button from '../components/ui/Button'
-import  Input from '../components/ui/Input'
+import Input from '../components/ui/Input'
 import FormField from '../components/ui/FormField'
 import ExerciseCard from '../components/ui/ExerciseCard'
 import ExerciseFilter from '../components/ui/Filter'
+import ConfirmModal from '../components/layout/ConfirmationModal'
 
 function RoutineForm() {
 
@@ -16,6 +17,7 @@ function RoutineForm() {
 
   const { id } = useParams()
   const navigate = useNavigate()
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false) //Modal para confirmar acción
 
   useEffect(() => {
     init()
@@ -184,14 +186,6 @@ function RoutineForm() {
 
       )
 
-      alert(
-
-        id
-          ? 'Rutina actualizada'
-          : 'Rutina creada'
-
-      )
-
       navigate('/routines')
 
     } catch (error) {
@@ -208,6 +202,11 @@ function RoutineForm() {
       setFilteredExercises(exercises)
     }, [exercises])
 
+
+  //Funcion para cancelar el formulario
+  const cancelForm = () => {
+    navigate("/exercises")
+  }
 
   return (
   <main className="min-h-screen flex flex-col px-4 py-8 font-sans items-center">
@@ -316,7 +315,23 @@ function RoutineForm() {
       <Button onClick={saveRoutine}>
         {id ? 'Actualizar' : 'Crear'}
       </Button>
+      <Button
+        onClick={() => setIsConfirmOpen(true)}
+        variant='secondary'    
+      >
+        {id ? 'Cancelar edición' : 'Volver'}
+      </Button>
       </div>
+      <ConfirmModal
+
+          isOpen={isConfirmOpen}
+          onClose={() => setIsConfirmOpen(false)}
+          onConfirm={() => {cancelForm() }}
+          title="Salir del formulario"
+          message="Si sales del formulario los datos introducidos desapareceran"
+          confirmText="Salir"
+          cancelText="Cancelar"
+      />
     </main>
 )
 }

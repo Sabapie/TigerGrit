@@ -13,13 +13,13 @@ function Modal({isOpen, onClose, children}) {
         onClick={(e) => e.stopPropagation()} // Evita que el clic en el contenido cierre el modal
         className=" bg-zinc-900 p-6 rounded-2xl w-[90%] max-w-2xl relative z-10"
       >
-
-        <button
+        {/* Boton para salir del modal */}
+        {/* <button
           onClick={onClose}
           className=" absolute top-4 right-4 text-white"
         >
           X
-        </button>
+        </button> */}
 
         {children}
 

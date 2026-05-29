@@ -4,18 +4,7 @@ function Header() {
 
   return (
 
-    <header
-      className="
-        h-16
-        border-b
-        border-zinc-800
-        bg-zinc-900/80
-        backdrop-blur
-        sticky
-        top-0
-        z-50
-      "
-    >
+    <header className="h-16 border-b border-zinc-800 bg-zinc-900/80 backdrop-blur sticky top-0 z-50">
 
       <div className="max-w-[1800px] mx-auto h-full px-6 flex items-center justify-between">
 

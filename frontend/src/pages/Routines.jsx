@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import RoutineCard from '../components/ui/RoutineCard'
 import RoutineModal from '../components/layout/RoutineModal'
+import Button from '../components/ui/Button'
+import ExerciseFilter from '../components/ui/Filter'
 
 function Routines() {
 
@@ -55,7 +58,18 @@ function Routines() {
     <main className="min-h-screen flex flex-col px-4 py-8 font-sans items-center">
       <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-[1500px] ">
       <h1>Mis rutinas</h1>
-
+      <ExerciseFilter
+            exercises={routines}
+            onFilter={setFilteredRoutines}
+            onlySearch
+      />
+      <Link to={"/routine-form"}>
+        <Button
+          variant='primary'
+        >
+          Crear rutina
+        </Button>
+      </Link>
       {
           filteredRoutines.map((routine) => ( // Mapea cada rutina a un bloque de información
 

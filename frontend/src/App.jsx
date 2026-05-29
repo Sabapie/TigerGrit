@@ -2,7 +2,6 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import Dashboard from './pages/Dashboard'
 import NotFound from './pages/NotFound'
 import ProtectedRoute from './components/ProtectedRoute'
 import Exercises from './pages/Exercises'
@@ -42,14 +41,6 @@ function App() {
         <Route
           path="/register" element={<Register />}
         />
-
-        {/* Ruta protegida para el dashboard */}
-        <Route
-          path="/dashboard" element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        } />
 
         {/* Ruta protegida para ejercicios */}
         <Route

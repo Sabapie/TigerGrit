@@ -5,12 +5,14 @@ import Button from '../ui/Button'
 import ExerciseCard from '../ui/ExerciseCard'
 import ExerciseModal from './ExerciseModal'
 import { useState } from 'react'  
+import ConfirmModal from './ConfirmationModal'
 
 function RoutineModal({ routine, isOpen, onClose, onDelete}) {
 
 const navigate = useNavigate()
 const [selectedExercise, setSelectedExercise] = useState(null)
 const [isExerciseModalOpen, setIsExerciseModalOpen] = useState(false)
+const [isConfirmOpen, setIsConfirmOpen] = useState(false) //Modal para confirmar acción
 
 async function deleteRoutine() {
 
@@ -89,14 +91,8 @@ const totalDuration =
 
             <Button
             variant="danger"
-            onClick={(e) => {
-
-                e.stopPropagation()
-
-                deleteRoutine()
-
-            }}
-            >
+            onClick={(e) => {setIsConfirmOpen(true)}
+            }>
 
             🗑️ Eliminar
 
@@ -211,6 +207,18 @@ const totalDuration =
 
         </Modal>
 
+        <ConfirmModal
+
+            isOpen={isConfirmOpen}
+            onClose={() => setIsConfirmOpen(false)}
+            onConfirm={()  => deleteRoutine()}
+            title="Eliminar rutina"
+            message="¿Estas seguro de que quieres borrar permanentemente la rutina?"
+            confirmText="Eliminar"
+            cancelText="Cancelar"
+            danger
+        />
+        
         {/* Modal de ejercicio dentro del modal de rutina */}
         <ExerciseModal
             exercise={selectedExercise}

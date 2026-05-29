@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import ExerciseCard from '../components/ui/ExerciseCard'
 import ExerciseModal from '../components/layout/ExerciseModal'
 import ExerciseFilter from '../components/ui/Filter'
+import Button from '../components/ui/Button'
 
 function Exercises() {
 
@@ -53,6 +55,14 @@ function Exercises() {
           exercises={exercises}
           onFilter={setFilteredExercises}
         />
+      <Link to={"/exercise-form"}>
+        <Button
+          variant='primary'
+        >
+          Crear ejercicio
+        </Button>
+      </Link>
+        
       </div>
 
       <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-[1500px] grid grid-cols-3 gap-5">
