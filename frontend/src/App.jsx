@@ -11,6 +11,8 @@ import CalendarPage from './pages/CalendarPage'
 import Header from './components/layout/Header'
 import Profile from './pages/Profile'
 import Footer from './components/layout/Footer'
+import Community from './pages/Community'
+
 
 function App() {
 
@@ -81,14 +83,21 @@ function App() {
           <ProtectedRoute>
             <CalendarPage />
           </ProtectedRoute>
-         } />    
+        } />    
 
-         <Route
+        <Route
           path="/profile" element={
           <ProtectedRoute>
             <Profile />
           </ProtectedRoute>
-         } />  
+        } />  
+
+        <Route path="/community" element={
+            <ProtectedRoute>
+              <Community />
+            </ProtectedRoute>
+          } />
+          
       </Routes>
 
       <Footer />

@@ -35,6 +35,7 @@ function AuthModal({ isOpen, onClose }) {
         { email: loginEmail, password: loginPassword }
       )
       localStorage.setItem('token', response.data.token) // Guarda el token de sesion en el storage local
+      localStorage.setItem('user', JSON.stringify(response.data.user)) // Guarda el usuario para poder usarlo en el apartado comunidad
       localStorage.setItem('name', response.data.user?.name) // Guarda el nombre de usuaio en el storage local
 
       onClose()
@@ -55,6 +56,7 @@ function AuthModal({ isOpen, onClose }) {
         { name: registerName, email: registerEmail, password: registerPassword }
       )
       localStorage.setItem('token', response.data.token) // Guarda el token de sesion en el storage local
+      localStorage.setItem('user', JSON.stringify(response.data.user)) // Guarda el usuario para poder usarlo en el apartado comunidad
       localStorage.setItem('name', response.data.user?.name || registerName) // Guarda el nombre de usuaio en el storage local
       onClose()
       navigate('/calendar')

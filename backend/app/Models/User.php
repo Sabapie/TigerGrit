@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens; // <-- Agrega esta línea para usar Sanctum
+use App\Models\Conversation;
+use App\Models\Message;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
@@ -56,4 +58,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(ScheduledRoutine::class); // Relación con las programaciones de rutinas del usuario
     }
+
+    public function conversations()
+    {
+        return $this->belongsToMany(
+            Conversation::class,
+            'conversation_user'
+        )
+        ->withPivot('last_read_at')
+        ->withTimestamps();
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+    
 }

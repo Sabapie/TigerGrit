@@ -113,15 +113,12 @@ function Navbar() {
                 Calendario
               </Link>
 
-              <button
-
-                onClick={logout}
-
-                className="mt-auto bg-red-500 hover:bg-red-600 transition rounded-xl py-3 text-white font-bold">
-
-                Logout
-
-              </button>
+              <Link 
+              to="/community" 
+              onClick={() => setIsOpen(false)}
+              className="text-zinc-300 hover:text-white transition">
+                Comunidad
+              </Link>
 
             </>
           )
