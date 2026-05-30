@@ -157,13 +157,9 @@ function CalendarPage() {
   return (
 
     <main className="flex flex-col items-center px-6 gap-6">
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-[1500px] flex flex-col gap-5">
+      <div className="bg-zinc-900 border-x border-zinc-800 p-8 w-full max-w-[1500px] flex flex-col gap-5">
 
-      <CalendarView
-        date={date}
-        setDate={setDate}
-        scheduledRoutines={scheduledRoutines}
-      />
+
 
       
       <div className='flex flex-row flex-wrap items-center gap-8'>
@@ -222,6 +218,12 @@ function CalendarPage() {
         <Button onClick={deleteRoutine} variant='primary'>
           Eliminar rutina
         </Button>
+
+        <CalendarView
+          date={date}
+          setDate={setDate}
+          scheduledRoutines={scheduledRoutines}
+        />
       </div>
         <RoutineModal
           routine={modalRoutine}

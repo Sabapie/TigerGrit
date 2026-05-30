@@ -1,7 +1,5 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Home from './pages/Home'
-import Login from './pages/Login'
-import Register from './pages/Register'
 import NotFound from './pages/NotFound'
 import ProtectedRoute from './components/ProtectedRoute'
 import Exercises from './pages/Exercises'
@@ -11,6 +9,7 @@ import Routines from './pages/Routines'
 import Navbar from './components/layout/NavBar'
 import CalendarPage from './pages/CalendarPage'
 import Header from './components/layout/Header'
+import Profile from './pages/Profile'
 import Footer from './components/layout/Footer'
 
 function App() {
@@ -32,14 +31,6 @@ function App() {
 
         <Route
           path="/" element={<Home />}
-        />
-
-        <Route
-          path="/login" element={<Login />}
-        />
-
-        <Route
-          path="/register" element={<Register />}
         />
 
         {/* Ruta protegida para ejercicios */}
@@ -91,6 +82,13 @@ function App() {
             <CalendarPage />
           </ProtectedRoute>
          } />    
+
+         <Route
+          path="/profile" element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+         } />  
       </Routes>
 
       <Footer />

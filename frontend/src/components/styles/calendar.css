@@ -76,7 +76,7 @@
 }
 
 .react-calendar__navigation__label{
-    @apply text-start text-2xl font-bold;
+    @apply text-start text-2xl font-bold pointer-events-none;
     padding-left: 0 !important;
     order: 1;
 }

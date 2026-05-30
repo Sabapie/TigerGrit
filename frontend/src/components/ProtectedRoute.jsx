@@ -4,7 +4,7 @@ function ProtectedRoute({ children }) {
   const token = localStorage.getItem('token') // ¿Hay sesión?
 
   if (!token) {
-    return <Navigate to="/login" /> // Si no hay token, redirige al login
+    return <Navigate to="/" /> // Si no hay token, redirige a home
   }
 
   return children // Si hay token, muestra la página

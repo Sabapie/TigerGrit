@@ -1,7 +1,11 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useState } from 'react'
 
 function Navbar() {
+
+  // location.pathname es la ruta actual
+  const location = useLocation()
+  const isHome = location.pathname === '/'
 
   const navigate = useNavigate()
   const token = localStorage.getItem('token')
@@ -14,6 +18,9 @@ function Navbar() {
     navigate('/login')
   }
 
+  if (isHome) return(
+    <></>
+  )
   return (
 
     <>
@@ -23,7 +30,7 @@ function Navbar() {
 
         onClick={() => setIsOpen(!isOpen)}
 
-        className="fixed top-4 right-4 z-50 bg-tigergrit text-black w-12 h-12 rounded-xl font-bold text-xl shadow-lg">
+        className="fixed top-4 left-4 z-50 bg-tigergrit text-black w-12 h-12 rounded-xl font-bold text-xl shadow-lg">
 
         ☰
 
@@ -46,8 +53,8 @@ function Navbar() {
       {/* SIDEBAR */}
       <nav
 
-        className={`fixed top-0 right-0 h-screen w-72 bg-zinc-900 border-l border-zinc-800 z-50 transition-transform duration-300 flex flex-col p-6 gap-4
-          ${isOpen ? 'translate-x-0' : 'translate-x-full'}
+        className={`fixed top-0 left-0 h-screen w-72 bg-zinc-900 border-l border-zinc-800 z-50 transition-transform duration-300 flex flex-col p-6 gap-4
+          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
       >
 
@@ -123,23 +130,6 @@ function Navbar() {
         {
           !token && (
             <>
-
-              <Link
-                to="/login"
-                onClick={() => setIsOpen(false)}
-                className="text-zinc-300 hover:text-white transition"
-              >
-                Login
-              </Link>
-
-              <Link
-                to="/register"
-                onClick={() => setIsOpen(false)}
-                className="text-zinc-300 hover:text-white transition"
-              >
-                Register
-              </Link>
-
             </>
           )
         }

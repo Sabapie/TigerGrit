@@ -178,8 +178,8 @@ const cancelForm = () => {
 }
 
 return (
-<main className="min-h-screen flex flex-col px-4 py-8 font-sans items-center">
-    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-[1500px] flex flex-col gap-5">
+  <main className="flex flex-col items-center px-6 gap-6">
+    <div className="bg-zinc-900 border-x border-zinc-800 p-8 w-full max-w-[1500px] flex flex-col gap-5">
 
       <h1 className="text-white text-2xl font-semibold tracking-tight">
         {id ? 'Editar ejercicio' : 'Nuevo ejercicio'}
