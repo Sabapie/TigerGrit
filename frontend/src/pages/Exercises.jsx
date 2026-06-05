@@ -41,28 +41,28 @@ function Exercises() {
   // Filtro 
   const [filteredExercises, setFilteredExercises] = useState([])
 
-    useEffect(() => {
-      setFilteredExercises(exercises)
-    }, [exercises])
+  useEffect(() => {
+    setFilteredExercises(exercises)
+  }, [exercises])
 
 
   return (
 
-  <main className="flex flex-col items-center px-6 gap-6">
-    <div className="bg-zinc-900 border-x border-zinc-800 p-8 w-full max-w-[1500px] flex flex-col gap-5">
+    <main className="flex flex-col items-center px-6 gap-6">
+      <div className="bg-zinc-900 border-x border-zinc-800 p-8 w-full max-w-[1500px] flex flex-col gap-5">
 
         <ExerciseFilter
           exercises={exercises}
           onFilter={setFilteredExercises}
         />
-      <Link to={"/exercise-form"}>
-        <Button
-          variant='primary'
-        >
-          Crear ejercicio
-        </Button>
-      </Link>
-        
+        <Link to={"/exercise-form"}>
+          <Button
+            variant='primary'
+          >
+            Crear ejercicio
+          </Button>
+        </Link>
+
       </div>
 
       <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-[1500px] grid grid-cols-3 gap-5">

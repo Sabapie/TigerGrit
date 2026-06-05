@@ -32,7 +32,7 @@ class ExerciseController extends Controller
             'muscle_area' => 'required',
             'weight' => 'nullable|numeric',
             'weight_unit' => 'required|string',
-            'image' => 'nullable',  // ← acepta cualquier cosa o null
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp',  // ← acepta cualquier cosa o null
         ]);
 
         $imagePath = null;
@@ -89,7 +89,7 @@ class ExerciseController extends Controller
             'muscle_area' => 'required',
             'weight' => 'nullable|numeric',
             'weight_unit' => 'required|string',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048' // validacion de imagen, opcional, debe ser un archivo de imagen con formato jpg, jpeg, png o webp y no debe superar los 2MB
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp' // validacion de imagen, opcional, debe ser un archivo de imagen con formato jpg, jpeg, png o webp
 
         ]);
 

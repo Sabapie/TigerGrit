@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import IsologotipoTigerGrit from '../../assets/Isologotipo-TigerGrit_white.png'
+import IsologotipoTigerGrit from '/Isologotipo-TigerGrit_White.png'
 import UserButton from '../ui/ProfileButton'
 
 function Header() {
@@ -8,6 +8,7 @@ function Header() {
   // location.pathname es la ruta actual
   const location = useLocation()
   const isHome = location.pathname === '/'
+  const token = localStorage.getItem('token')
 
   const [scrolled, setScrolled] = useState(false) // Controla cuando bajas en la pagina
 
@@ -31,9 +32,11 @@ function Header() {
 
         {/* Logo — solo visible al hacer scroll */}
         <div className={`transition-all duration-300 ${scrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-          <Link to="/">
-            <img src={IsologotipoTigerGrit} alt="" className='w-56'/>
+
+          <Link to={token ? '/calendar' : '/'}>
+            <img src={IsologotipoTigerGrit} alt="" className="w-56" />
           </Link>
+
         </div>
 
         <div className="ml-auto">
@@ -47,8 +50,8 @@ function Header() {
   return (
     <header className="h-auto p-5 border-b border-zinc-800 bg-zinc-900/80 backdrop-blur top-0 left-0 w-full z-50">
       <div className="mx-auto 2xl:mx-40 h-full px-4 flex items-center justify-between">
-        <Link to="/">
-          <img src={IsologotipoTigerGrit} alt="" className='w-56'/>
+        <Link to={token ? '/calendar' : '/'}>
+          <img src={IsologotipoTigerGrit} alt="" className="w-56" />
         </Link>
         <UserButton />
       </div>

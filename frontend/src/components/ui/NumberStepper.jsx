@@ -1,4 +1,4 @@
-export default function NumberStepper({ label, value, onChange, min = 1, max = 999, step}) {
+export default function NumberStepper({ label, value, onChange, min = 1, max = 999, step }) {
   return (
     <div className="flex flex-col gap-1 flex-1 min-w-[120px]">
       <label className="text-zinc-500 text-xs font-medium uppercase tracking-widest">{label}</label>

@@ -59,7 +59,7 @@ const EXERCISE_TYPE_OPTIONS = [
 
 ]
 
-function ExerciseFilter({exercises, onFilter, onlySearch = false}) {
+function ExerciseFilter({ exercises, onFilter, onlySearch = false }) {
 
   const [search, setSearch] = useState('')
   const [muscleGroup, setMuscleGroup] = useState('')
@@ -67,7 +67,8 @@ function ExerciseFilter({exercises, onFilter, onlySearch = false}) {
   const [exerciseType, setExerciseType] = useState('')
   const [createdDate, setCreatedDate] = useState('')
 
-  useEffect(() => { filterExercises() 
+  useEffect(() => {
+    filterExercises()
   }, [search, muscleGroup, muscleArea, exerciseType])
 
   const filterExercises = () => {
@@ -138,15 +139,15 @@ function ExerciseFilter({exercises, onFilter, onlySearch = false}) {
 
   }
 
-  if(onlySearch) return(
-      <FormField
-          placeholder="Buscar ejercicio..."
-          value={search}
-          className="h-full"
-          onChange={(e) =>
-            setSearch(e.target.value)
-          }
-        />
+  if (onlySearch) return (
+    <FormField
+      placeholder="Buscar ejercicio..."
+      value={search}
+      className="h-full"
+      onChange={(e) =>
+        setSearch(e.target.value)
+      }
+    />
   )
 
   return (
@@ -190,7 +191,7 @@ function ExerciseFilter({exercises, onFilter, onlySearch = false}) {
         />
 
       </div>
-        
+
 
       <Button
         variant="primary"

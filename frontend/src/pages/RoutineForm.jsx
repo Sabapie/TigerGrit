@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams, Link, useNavigate} from 'react-router-dom' // Hook para obtener parámetros de la URL
+import { useParams, Link, useNavigate } from 'react-router-dom' // Hook para obtener parámetros de la URL
 import axios from 'axios'
 import Button from '../components/ui/Button'
 import Input from '../components/ui/Input'
@@ -77,18 +77,18 @@ function RoutineForm() {
 
     try {
 
-    const token = localStorage.getItem('token')
+      const token = localStorage.getItem('token')
 
-    const response = await axios.get(
+      const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/exercises`,
-            
+
         {
           headers: {
             Authorization: `Bearer ${token}`
           }
         }
-        
-    )
+
+      )
 
       setExercises(response.data)
 
@@ -194,13 +194,13 @@ function RoutineForm() {
 
     }
   }
-  
+
   // Filtro 
   const [filteredExercises, setFilteredExercises] = useState([])
-    
-    useEffect(() => {
-      setFilteredExercises(exercises)
-    }, [exercises])
+
+  useEffect(() => {
+    setFilteredExercises(exercises)
+  }, [exercises])
 
 
   //Funcion para cancelar el formulario
@@ -209,41 +209,41 @@ function RoutineForm() {
   }
 
   return (
-  <main className="min-h-screen flex flex-col px-4 py-8 font-sans items-center">
-    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-[1500px] flex flex-col gap-5">
+    <main className="min-h-screen flex flex-col px-4 py-8 font-sans items-center">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-[1500px] flex flex-col gap-5">
 
-      <h1 className="text-white text-2xl font-semibold tracking-tight">
-        {id ? 'Editar rutina' : 'Crear rutina'}
-      </h1>
+        <h1 className="text-white text-2xl font-semibold tracking-tight">
+          {id ? 'Editar rutina' : 'Crear rutina'}
+        </h1>
 
-      <FormField
-        label="Nombre rutina*"
-        value={name}
-        placeholder="Nombre de la rutina"
-        onChange={(e) => setName(e.target.value)}
-        error={submitted ? errors.name : ''}
-      />
-      <FormField
-        label="Descripción"
-        value={description}
-        placeholder="Descripción"
-        onChange={(e) => setDescription(e.target.value)}
-        multiline
-      />
-
-      {/* EJERCICIOS */}
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between">
-          <h2 className="text-white font-semibold text-lg">Ejercicios</h2>
-          <span className="text-zinc-500 text-sm">
-            {selectedExercises.length} seleccionados
-          </span>
-        </div>
-      <ExerciseFilter
-          exercises={exercises}
-          onFilter={setFilteredExercises}
+        <FormField
+          label="Nombre rutina*"
+          value={name}
+          placeholder="Nombre de la rutina"
+          onChange={(e) => setName(e.target.value)}
+          error={submitted ? errors.name : ''}
         />
-      </div>
+        <FormField
+          label="Descripción"
+          value={description}
+          placeholder="Descripción"
+          onChange={(e) => setDescription(e.target.value)}
+          multiline
+        />
+
+        {/* EJERCICIOS */}
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-white font-semibold text-lg">Ejercicios</h2>
+            <span className="text-zinc-500 text-sm">
+              {selectedExercises.length} seleccionados
+            </span>
+          </div>
+          <ExerciseFilter
+            exercises={exercises}
+            onFilter={setFilteredExercises}
+          />
+        </div>
         {/* Slider */}
         <div className="relative">
           <div className="flex gap-3 overflow-x-auto pb-3 scroll-smooth snap-x snap-mandatory"
@@ -283,7 +283,7 @@ function RoutineForm() {
                   <div className={`rounded-2xl overflow-hidden border-2 transition ${isSelected ? 'border-tigergrit' : 'border-transparent'}`}>
                     <ExerciseCard
                       exercise={exercise}
-                      onSelect={() => {}}
+                      onSelect={() => { }}
                     />
                   </div>
                 </div>
@@ -312,28 +312,28 @@ function RoutineForm() {
           </div>
         )}
 
-      <Button onClick={saveRoutine}>
-        {id ? 'Actualizar' : 'Crear'}
-      </Button>
-      <Button
-        onClick={() => setIsConfirmOpen(true)}
-        variant='secondary'    
-      >
-        {id ? 'Cancelar edición' : 'Volver'}
-      </Button>
+        <Button onClick={saveRoutine}>
+          {id ? 'Actualizar' : 'Crear'}
+        </Button>
+        <Button
+          onClick={() => setIsConfirmOpen(true)}
+          variant='secondary'
+        >
+          {id ? 'Cancelar edición' : 'Volver'}
+        </Button>
       </div>
       <ConfirmModal
 
-          isOpen={isConfirmOpen}
-          onClose={() => setIsConfirmOpen(false)}
-          onConfirm={() => {cancelForm() }}
-          title="Salir del formulario"
-          message="Si sales del formulario los datos introducidos desapareceran"
-          confirmText="Salir"
-          cancelText="Cancelar"
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={() => { cancelForm() }}
+        title="Salir del formulario"
+        message="Si sales del formulario los datos introducidos desapareceran"
+        confirmText="Salir"
+        cancelText="Cancelar"
       />
     </main>
-)
+  )
 }
 
 export default RoutineForm

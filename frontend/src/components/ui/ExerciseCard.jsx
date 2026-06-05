@@ -1,4 +1,4 @@
-import placeholderImg from '../../assets/TigerGrit.png' // imagen placeholder
+import placeholderImg from '/TigerGrit.png' // imagen placeholder
 
 function ExerciseCard({ exercise, onSelect, compact = false }) {
 
@@ -17,7 +17,7 @@ function ExerciseCard({ exercise, onSelect, compact = false }) {
       <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-zinc-700">
         {exercise.image
           ? <img src={getImageUrl(exercise.image)} alt={exercise.name} className="w-full h-full object-cover" />
-          : <div className="w-full h-full flex items-center justify-center text-zinc-500 text-xs"><img src={placeholderImg} alt='Sin imagen' className="grayscale opacity-30"/></div>
+          : <div className="w-full h-full flex items-center justify-center text-zinc-500 text-xs"><img src={placeholderImg} alt='Sin imagen' className="grayscale opacity-30" /></div>
         }
       </div>
 
@@ -43,7 +43,7 @@ function ExerciseCard({ exercise, onSelect, compact = false }) {
       <div className="w-full h-36 bg-zinc-700 overflow-hidden relative">
         {exercise.image
           ? <img src={getImageUrl(exercise.image)} alt={exercise.name} className="w-full h-full object-cover" />
-          : <div className="w-full h-full flex items-center justify-center text-zinc-500 text-sm"><img src={placeholderImg} alt='Sin imagen' className="grayscale opacity-30"/></div>
+          : <div className="w-full h-full flex items-center justify-center text-zinc-500 text-sm"><img src={placeholderImg} alt='Sin imagen' className="grayscale opacity-30" /></div>
         }
         {exercise.user_id === null && (
           <span className="absolute top-2 right-2 text-xs bg-tigergrit text-zinc-900 font-semibold px-2 py-0.5 rounded-full">oficial</span>

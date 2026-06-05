@@ -1,25 +1,25 @@
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import AuthModal from '../layout/ModalLogin'
-import userIcon from '../../assets/user.svg' 
+import userIcon from '/user.svg'
 
 function UserButton() {
 
-const navigate = useNavigate()
-const token = localStorage.getItem('token')
-const name = localStorage.getItem('name')
-const [authOpen, setAuthOpen] = useState(false)
+  const navigate = useNavigate()
+  const token = localStorage.getItem('token')
+  const name = localStorage.getItem('name')
+  const [authOpen, setAuthOpen] = useState(false)
 
-// Si hay sesion perfil si no login
-const handleClick = () => {
+  // Si hay sesion perfil si no login
+  const handleClick = () => {
     if (token) {
-        navigate('/profile')
+      navigate('/profile')
     } else {
-        setAuthOpen(true)
+      setAuthOpen(true)
     }
-}
+  }
 
-return (
+  return (
     <>
       <button
         onClick={handleClick}

@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import WelImg from '../assets/Wellcome.jpg'
-import OrgImg from '../assets/Organization.jpg'
-import ComImg from '../assets/Community.jpg'
-import IsologotipoTigerGrit from '../assets/Isologotipo-TigerGrit.png'
+import WelImg from '/Wellcome.jpg'
+import OrgImg from '/Organization.jpg'
+import ComImg from '/Community.jpg'
+import IsologotipoTigerGrit from '/Isologotipo-TigerGrit.png'
 import Button from '../components/ui/Button'
 import Footer from '../components/layout/Footer'
 import AuthModal from '../components/layout/ModalLogin'
@@ -19,11 +19,11 @@ function Home() {
 
   // Si hay sesion entras, si no, login
   const handleClick = () => {
-      if (token) {
-          navigate('/calendar')
-      } else {
-          setAuthOpen(true)
-      }
+    if (token) {
+      navigate('/calendar')
+    } else {
+      setAuthOpen(true)
+    }
   }
 
 
@@ -55,7 +55,7 @@ function Home() {
             className="bg-tigergrit hover:bg-tigergrit/90 text-zinc-900 font-bold px-8 py-3 rounded-xl transition active:scale-95 text-lg shadow-lg shadow-tigergrit/20"
           >
             {token ? 'Comenzar Entrenamiento' : 'Iniciar Sesión'}
-          
+
           </Button>
         </div>
 

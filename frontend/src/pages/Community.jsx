@@ -213,63 +213,63 @@ export default function Community() {
   }
 
   const copyItem = async (type, item) => {
-  try {
-    const copyExercise = (exercise, parentId) => axios.post(`${API}/exercises`, {
-      name: exercise.name,
-      description: exercise.description || null,
-      observations: exercise.observations || null,
-      image: exercise.image || null,
-      duration: exercise.duration || 60,
-      rest: exercise.rest || 0,
-      repetitions: exercise.repetitions || 1,
-      sets: exercise.sets || 1,
-      weight: exercise.weight || 0,
-      weight_unit: exercise.weight_unit || 'kg',
-      muscle_group: exercise.muscle_group || '',
-      muscle_area: exercise.muscle_area || '',
-      parent_exercise_id: parentId || null,
-    }, { headers: headers() })
-
-    if (type === 'exercise') {
-      await copyExercise(item, item.id)
-      alert('Ejercicio guardado en tu biblioteca')
-
-    } else {
-      // Cargar la rutina completa con sus ejercicios
-      const fullRoutine = await axios.get(
-        `${API}/routines/${item.id}`,
-        { headers: headers() }
-      )
-      const routineWithExercises = fullRoutine.data
-
-      const newExerciseIds = await Promise.all(
-        (routineWithExercises.exercises || []).map(async (exercise) => {
-          const res = await copyExercise(exercise, exercise.id)
-          return res.data.id
-        })
-      )
-
-      const routineRes = await axios.post(`${API}/routines`, {
-        name: item.name,
-        description: item.description || null,
+    try {
+      const copyExercise = (exercise, parentId) => axios.post(`${API}/exercises`, {
+        name: exercise.name,
+        description: exercise.description || null,
+        observations: exercise.observations || null,
+        image: exercise.image || null,
+        duration: exercise.duration || 60,
+        rest: exercise.rest || 0,
+        repetitions: exercise.repetitions || 1,
+        sets: exercise.sets || 1,
+        weight: exercise.weight || 0,
+        weight_unit: exercise.weight_unit || 'kg',
+        muscle_group: exercise.muscle_group || '',
+        muscle_area: exercise.muscle_area || '',
+        parent_exercise_id: parentId || null,
       }, { headers: headers() })
 
-      if (newExerciseIds.length > 0) {
-        await axios.post(
-          `${API}/routines/${routineRes.data.id}/sync-exercises`,
-          { exercises: newExerciseIds },
+      if (type === 'exercise') {
+        await copyExercise(item, item.id)
+        alert('Ejercicio guardado en tu biblioteca')
+
+      } else {
+        // Cargar la rutina completa con sus ejercicios
+        const fullRoutine = await axios.get(
+          `${API}/routines/${item.id}`,
           { headers: headers() }
         )
+        const routineWithExercises = fullRoutine.data
+
+        const newExerciseIds = await Promise.all(
+          (routineWithExercises.exercises || []).map(async (exercise) => {
+            const res = await copyExercise(exercise, exercise.id)
+            return res.data.id
+          })
+        )
+
+        const routineRes = await axios.post(`${API}/routines`, {
+          name: item.name,
+          description: item.description || null,
+        }, { headers: headers() })
+
+        if (newExerciseIds.length > 0) {
+          await axios.post(
+            `${API}/routines/${routineRes.data.id}/sync-exercises`,
+            { exercises: newExerciseIds },
+            { headers: headers() }
+          )
+        }
+
+        alert('Rutina guardada con todos sus ejercicios')
       }
 
-      alert('Rutina guardada con todos sus ejercicios')
+    } catch (error) {
+      console.error('Error:', error.response?.data)
+      alert('Error al guardar')
     }
-
-  } catch (error) {
-    console.error('Error:', error.response?.data)
-    alert('Error al guardar')
   }
-}
 
   const filteredUsers = users.filter(u => u.name.toLowerCase().includes(search.toLowerCase()))
   const filteredConvs = (type) => conversations
@@ -381,14 +381,14 @@ export default function Community() {
               {activeConv.type === 'private'
                 ? <Avatar name={convName || '?'} size="md" />
                 : <div className="w-10 h-10 rounded-full bg-zinc-700 flex items-center justify-center text-lg">
-                    {activeConv.type === 'group' ? '👥' : '🌐'}
-                  </div>
+                  {activeConv.type === 'group' ? '👥' : '🌐'}
+                </div>
               }
               <div>
                 <p className="text-white font-bold">{convName}</p>
                 <p className="text-zinc-500 text-xs">
                   {activeConv.type === 'private' ? 'Chat privado' :
-                   activeConv.type === 'group' ? 'Grupo' : 'Comunidad'}
+                    activeConv.type === 'group' ? 'Grupo' : 'Comunidad'}
                 </p>
               </div>
             </div>

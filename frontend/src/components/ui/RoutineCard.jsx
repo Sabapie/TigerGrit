@@ -1,28 +1,30 @@
-import placeholderImg from '../../assets/TigerGrit.png'
+import placeholderImg from '/TigerGrit.png'
 
-function RoutineCard({ routine, onSelect, compact = false, onDoubleClick}) {
+function RoutineCard({ routine, onSelect, compact = false, onDoubleClick }) {
 
   const totalExercises = routine.exercises?.length || 0
   const totalSets = routine.exercises?.reduce((acc, ex) => acc + (ex.sets || 0), 0) || 0
   const totalDuration = routine.exercises?.reduce((acc, ex) => acc + (ex.duration || 0), 0) || 0
 
-  if (compact) {return (
-    <div
-      onClick={() => onSelect(routine)}
-      className="flex items-center gap-3 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-tigergrit rounded-xl p-3 cursor-pointer transition group"
-      onDoubleClick={onDoubleClick}
-    >
+  if (compact) {
+    return (
+      <div
+        onClick={() => onSelect?.(routine)}
+        className="flex items-center gap-3 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-tigergrit rounded-xl p-3 cursor-pointer transition group"
+        onDoubleClick={onDoubleClick}
+      >
 
-      {/* Info */}
-      <div className="flex-1 min-w-0">
-        <h3 className="text-white text-sm font-semibold truncate">{routine.name}</h3>
-        <p className="text-zinc-500 text-xs truncate">{totalExercises} ejercicios · {totalSets} series</p>
+        {/* Info */}
+        <div className="flex-1 min-w-0">
+          <h3 className="text-white text-sm font-semibold truncate">{routine.name}</h3>
+          <p className="text-zinc-500 text-xs truncate">{totalExercises} ejercicios · {totalSets} series</p>
+        </div>
+
+        {/* Duración */}
+        <span className="text-xs text-zinc-400 shrink-0">{Math.floor(totalDuration / 60)}m</span>
       </div>
-
-      {/* Duración */}
-      <span className="text-xs text-zinc-400 shrink-0">{Math.floor(totalDuration / 60)}m</span>
-    </div>
-  )}
+    )
+  }
 
   return (
     <div

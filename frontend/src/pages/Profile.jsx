@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import userIcon from '../assets/user.svg' 
+import userIcon from '/user.svg'
 
 function Profile() {
 
@@ -35,7 +35,7 @@ function Profile() {
       const routines = routinesRes.data
       const topRoutine = routines.reduce((top, r) =>
         (r.exercises?.length || 0) > (top?.exercises?.length || 0) ? r : top
-      , null)
+        , null)
 
       setStats({
         exercises: userExercises.length,

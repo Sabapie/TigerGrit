@@ -1,37 +1,87 @@
-
-
 .react-calendar {
-    @apply w-full max-w-md rounded-2xl text-white rounded-none p-4 border-x border-[#2A2A2A] ;
+    @apply w-full max-w-[1500px] rounded-none mt-0 h-full;
     background-color: #1A1A1A !important;
 }
-/* DÍAS
- */
+
+/* NAVEGACIÓN */
+.react-calendar__navigation {
+    @apply flex justify-between items-center mb-2 sm:mb-4;
+}
+
+.react-calendar__navigation button {
+    @apply px-2 py-1 rounded-lg;
+}
+
+.react-calendar__navigation__next-button {
+    @apply text-2xl sm:text-4xl lg:text-5xl;
+    order: 3;
+}
+
+.react-calendar__navigation__prev-button {
+    @apply text-2xl sm:text-4xl lg:text-5xl;
+    order: 2;
+}
+
+.react-calendar__navigation__label {
+    @apply text-start text-base sm:text-xl lg:text-2xl font-bold pointer-events-none capitalize;
+    padding-left: 0 !important;
+    order: 1;
+}
+
+/* Esconder botones innecesarios */
+.react-calendar__navigation__prev2-button {
+    @apply hidden;
+}
+.react-calendar__navigation__next2-button {
+    @apply hidden;
+}
+
+/* DÍAS DE LA SEMANA */
+.react-calendar__month-view__weekdays {
+    @apply mb-1 sm:mb-2;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+    @apply flex items-center justify-center pb-1 sm:pb-2;
+}
+
+.react-calendar__month-view__weekdays__weekday abbr {
+    @apply text-[#99A1AF] font-medium text-xs sm:text-sm lg:text-lg capitalize;
+    text-decoration: none !important;
+}
+
+/* GRID DE DÍAS */
+.react-calendar__month-view__days {
+    @apply w-full gap-1 sm:gap-2;
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+/* CELDAS */
 .react-calendar__tile {
-    @apply rounded-lg py-2 text-lg transition font-bold text-[#99A1AF] hover:bg-[#f46701]/50 h-auto w-auto aspect-square;
+    @apply rounded-lg transition font-bold text-[#99A1AF] hover:bg-[#f46701]/50 relative;
+    @apply text-xs sm:text-sm lg:text-lg;
+    @apply py-1 sm:py-2;
+    @apply aspect-square;
+    margin-bottom: 0 !important;
+    height: auto !important;
+    width: auto !important;
+}
+
+/* Días del mes */
+.react-calendar__month-view__days__day {
+    @apply bg-[#2A2A2A] text-[#99A1AF] shadow-none;
     margin-bottom: 0 !important;
 }
 
-/* Estilos por mes*/
-.react-calendar__month-view__days__day{
-    @apply bg-[#2A2A2A] text-[#99A1AF] mb-2 w-auto h-auto shadow-none;
-}
-
+/* Días de meses vecinos */
 .react-calendar__month-view__days__day--neighboringMonth {
     @apply bg-[#171717] shadow-inner shadow-black;
 }
 
-/* NAVIGATION (mes / flechas) */
-.react-calendar__navigation {
-    @apply flex justify-between items-center mb-4;
-}
-
-.react-calendar__navigation button {
-    @apply px-3 py-1 rounded-lg;
-}
-
 /* DÍA SELECCIONADO */
 .react-calendar__tile--active {
-    @apply bg-[#f46701]/90 text-white shadow-md shadow-[#f46701]/50 hover:bg-[#f46701] hover:shadow-[#f46701]/75 ;
+    @apply bg-[#f46701]/90 text-white shadow-md shadow-[#f46701]/50 hover:bg-[#f46701] hover:shadow-[#f46701]/75;
 }
 
 /* HOY */
@@ -39,59 +89,6 @@
     @apply bg-[#E0E0E0]/25 font-bold;
 }
 
-.react-calendar__tile--now.react-calendar__tile--active{
-    @apply bg-[#f46701]/90 text-white shadow-md shadow-[#f46701]/50 hover:bg-[#f46701] hover:shadow-[#f46701]/75 ;
-}
-
-/*PARA QUE OCUPE SIEMPRE TODA LA PANTALLA*/
-.react-calendar {
-    @apply max-w-[1500px] mt-0 h-full w-screen bg-gray-100;
-}
-
-/* TAMAÑO DE LOS DÍAS */
-.react-calendar__month-view__days {
-    @apply h-full w-full grid grid-cols-7 gap-3 ;
-    display: grid !important; /*Si no se pone no sobreescribira el estilo original*/
-    grid-template-columns: repeat(7, 1fr);
-}
-
-/*Esconder botones innecesarios*/
-.react-calendar__navigation__prev2-button {
-    @apply hidden ;
-}
-.react-calendar__navigation__next2-button{
-
-    @apply hidden ;
-}
-
-/*Orden del menu*/
-.react-calendar__navigation__next-button {
-    font-size: 50px;
-    order: 3;
-}
-
-.react-calendar__navigation__prev-button {
-    font-size: 50px;
-    order: 2;
-}
-
-.react-calendar__navigation__label{
-    @apply text-start text-2xl font-bold pointer-events-none;
-    padding-left: 0 !important;
-    order: 1;
-}
-
-/*PRIMERA LETRA MAYUSCULA*/
-.react-calendar__navigation__label::first-letter{
-    @apply capitalize;
-}
-
-/* DIA DE LA SEMANA */
-.react-calendar__month-view__weekdays__weekday{
-    @apply flex align-middle justify-center pb-2;
-}
-
-.react-calendar__month-view__weekdays__weekday abbr{
-    @apply text-[#99A1AF] font-medium text-lg capitalize align-middle;
-    text-decoration: none !important;
+.react-calendar__tile--now.react-calendar__tile--active {
+    @apply bg-[#f46701]/90 text-white shadow-md shadow-[#f46701]/50 hover:bg-[#f46701] hover:shadow-[#f46701]/75;
 }

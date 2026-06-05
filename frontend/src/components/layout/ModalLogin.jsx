@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { createPortal } from 'react-dom' // Para poder mostrarlo desde el header
-import IsologotipoTigerGrit from '../../assets/Isologotipo-TigerGrit_White.png'
+import IsologotipoTigerGrit from '/Isologotipo-TigerGrit_White.png'
 
 function AuthModal({ isOpen, onClose }) {
 
@@ -69,8 +69,8 @@ function AuthModal({ isOpen, onClose }) {
 
   if (!isOpen) return null
 
-   return createPortal(
-      <div
+  return createPortal(
+    <div
       className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-[100]"
       onClick={onClose}
     >
@@ -195,7 +195,7 @@ function AuthModal({ isOpen, onClose }) {
     </div>,
     document.body  // se renderiza directamente en el body
   )
-    
+
 }
 
 export default AuthModal

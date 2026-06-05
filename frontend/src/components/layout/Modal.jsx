@@ -1,12 +1,12 @@
-function Modal({isOpen, onClose, children}) {
+function Modal({ isOpen, onClose, children }) {
 
   if (!isOpen) return null
 
   return (
 
     <div
-        onClick={onClose}
-        className=" fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+      onClick={onClose}
+      className=" fixed inset-0 bg-black/70 flex items-center justify-center z-50"
     >
 
       <div

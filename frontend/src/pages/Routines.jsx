@@ -15,7 +15,7 @@ function Routines() {
 
   useEffect(() => {
 
-      getRoutines()
+    getRoutines()
 
   }, [])
 
@@ -25,7 +25,7 @@ function Routines() {
   useEffect(() => {
     setFilteredRoutines(routines)
   }, [routines])
-    
+
   const getRoutines = async () => {
 
     const token = localStorage.getItem('token')
@@ -57,49 +57,49 @@ function Routines() {
 
     <main className="min-h-screen flex flex-col px-4 py-8 font-sans items-center">
       <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-[1500px] ">
-      <h1>Mis rutinas</h1>
-      <ExerciseFilter
-            exercises={routines}
-            onFilter={setFilteredRoutines}
-            onlySearch
-      />
-      <Link to={"/routine-form"}>
-        <Button
-          variant='primary'
-        >
-          Crear rutina
-        </Button>
-      </Link>
-      {
+        <h1>Mis rutinas</h1>
+        <ExerciseFilter
+          exercises={routines}
+          onFilter={setFilteredRoutines}
+          onlySearch
+        />
+        <Link to={"/routine-form"}>
+          <Button
+            variant='primary'
+          >
+            Crear rutina
+          </Button>
+        </Link>
+        {
           filteredRoutines.map((routine) => ( // Mapea cada rutina a un bloque de información
 
-          <RoutineCard
+            <RoutineCard
               key={routine.id}
-              routine={routine} 
+              routine={routine}
               onSelect={() => {
-                  setSelectedRoutine(routine)
-                  setIsModalOpen(true)
+                setSelectedRoutine(routine)
+                setIsModalOpen(true)
               }}
-          />
+            />
 
           ))
-      }
+        }
 
-      <RoutineModal
+        <RoutineModal
 
           routine={selectedRoutine}
 
           isOpen={isModalOpen}
 
           onClose={() => // Cierra el modal y limpia la rutina seleccionada
-              setIsModalOpen(false)
+            setIsModalOpen(false)
           }
           onDelete={() => { // Función que se ejecuta después de eliminar una rutina
-              getRoutines()
-              setIsModalOpen(false)
-              setSelectedRoutine(null)
+            getRoutines()
+            setIsModalOpen(false)
+            setSelectedRoutine(null)
           }}
-      />
+        />
 
       </div>
     </main>
