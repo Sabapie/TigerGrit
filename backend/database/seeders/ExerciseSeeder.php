@@ -9,292 +9,248 @@ class ExerciseSeeder extends Seeder
 {
     public function run(): void
     {
+        $exercises = [
 
-    Exercise::create([
-        'name' => 'Press banca inclinado',
-        'description' => 'Ejercicio de pecho superior con barra',
-        'duration' => 20,
-        'rest' => 90,
-        'repetitions' => 10,
-        'sets' => 4,
-        'weight' => '70kg',
-        'muscle_group' => 'Pecho',
-        'muscle_area' => 'Pectoral superior',
-        'is_official' => true
-    ]);
+            // PECHO
+            [
+                'name' => 'Press banca inclinado',
+                'description' => 'Ejercicio de pecho superior con barra',
+                'duration' => 20,
+                'rest' => 90,
+                'repetitions' => 10,
+                'sets' => 4,
+                'weight' => 70,
+                'weight_unit' => 'kg',
+                'muscle_group' => 'Pecho',
+                'muscle_area' => 'Pectoral superior',
+            ],
+            [
+                'name' => 'Press banca plano',
+                'description' => 'Ejercicio principal para desarrollo del pecho',
+                'duration' => 20,
+                'rest' => 120,
+                'repetitions' => 8,
+                'sets' => 4,
+                'weight' => 80,
+                'weight_unit' => 'kg',
+                'muscle_group' => 'Pecho',
+                'muscle_area' => 'Pectoral medio',
+            ],
+            [
+                'name' => 'Fondos en paralelas',
+                'description' => 'Ejercicio para pecho inferior y tríceps',
+                'duration' => 15,
+                'rest' => 90,
+                'repetitions' => 12,
+                'sets' => 4,
+                'weight' => 0,
+                'weight_unit' => 'kg',
+                'muscle_group' => 'Pecho',
+                'muscle_area' => 'Pectoral inferior',
+            ],
 
-    Exercise::create([
-        'name' => 'Aperturas con mancuernas',
-        'description' => 'Ejercicio de pecho con mancuernas en banco plano',
-        'duration' => 15,
-        'rest' => 60,
-        'repetitions' => 12,
-        'sets' => 3,
-        'weight' => '20kg',
-        'muscle_group' => 'Pecho',
-        'muscle_area' => 'Pectoral medio',
-        'is_official' => true
-    ]);
+            // ESPALDA
+            [
+                'name' => 'Dominadas',
+                'description' => 'Ejercicio de dorsal con peso corporal',
+                'duration' => 20,
+                'rest' => 90,
+                'repetitions' => 10,
+                'sets' => 4,
+                'weight' => 0,
+                'weight_unit' => 'kg',
+                'muscle_group' => 'Espalda',
+                'muscle_area' => 'Dorsal',
+            ],
+            [
+                'name' => 'Remo con barra',
+                'description' => 'Trabajo de espalda media',
+                'duration' => 20,
+                'rest' => 90,
+                'repetitions' => 10,
+                'sets' => 4,
+                'weight' => 80,
+                'weight_unit' => 'kg',
+                'muscle_group' => 'Espalda',
+                'muscle_area' => 'Dorsal medio',
+            ],
+            [
+                'name' => 'Peso muerto',
+                'description' => 'Ejercicio compuesto para espalda y piernas',
+                'duration' => 30,
+                'rest' => 180,
+                'repetitions' => 5,
+                'sets' => 5,
+                'weight' => 120,
+                'weight_unit' => 'kg',
+                'muscle_group' => 'Espalda',
+                'muscle_area' => 'Lumbar',
+            ],
 
-    Exercise::create([
-        'name' => 'Fondos en paralelas',
-        'description' => 'Ejercicio de pecho inferior con peso corporal',
-        'duration' => 15,
-        'rest' => 90,
-        'repetitions' => 12,
-        'sets' => 4,
-        'weight' => null,
-        'muscle_group' => 'Pecho',
-        'muscle_area' => 'Pectoral inferior',
-        'is_official' => true
-    ]);
+            // HOMBRO
+            [
+                'name' => 'Press militar',
+                'description' => 'Trabajo principal del deltoides',
+                'duration' => 20,
+                'rest' => 90,
+                'repetitions' => 10,
+                'sets' => 4,
+                'weight' => 50,
+                'weight_unit' => 'kg',
+                'muscle_group' => 'Hombro',
+                'muscle_area' => 'Deltoides anterior',
+            ],
+            [
+                'name' => 'Elevaciones laterales',
+                'description' => 'Aislamiento del deltoides lateral',
+                'duration' => 15,
+                'rest' => 60,
+                'repetitions' => 15,
+                'sets' => 3,
+                'weight' => 10,
+                'weight_unit' => 'kg',
+                'muscle_group' => 'Hombro',
+                'muscle_area' => 'Deltoides lateral',
+            ],
 
-    Exercise::create([
-        'name' => 'Remo con barra',
-        'description' => 'Ejercicio de espalda media con barra',
-        'duration' => 20,
-        'rest' => 90,
-        'repetitions' => 10,
-        'sets' => 4,
-        'weight' => '80kg',
-        'muscle_group' => 'Espalda',
-        'muscle_area' => 'Dorsal medio',
-        'is_official' => true
-    ]);
+            // BICEPS
+            [
+                'name' => 'Curl con barra',
+                'description' => 'Ejercicio básico de bíceps',
+                'duration' => 15,
+                'rest' => 60,
+                'repetitions' => 12,
+                'sets' => 4,
+                'weight' => 30,
+                'weight_unit' => 'kg',
+                'muscle_group' => 'Bíceps',
+                'muscle_area' => 'Bíceps',
+            ],
+            [
+                'name' => 'Curl martillo',
+                'description' => 'Trabajo del braquial',
+                'duration' => 15,
+                'rest' => 60,
+                'repetitions' => 12,
+                'sets' => 3,
+                'weight' => 16,
+                'weight_unit' => 'kg',
+                'muscle_group' => 'Bíceps',
+                'muscle_area' => 'Braquial',
+            ],
 
-    Exercise::create([
-        'name' => 'Peso muerto',
-        'description' => 'Ejercicio compound de espalda baja y piernas',
-        'duration' => 30,
-        'rest' => 180,
-        'repetitions' => 5,
-        'sets' => 5,
-        'weight' => '120kg',
-        'muscle_group' => 'Espalda',
-        'muscle_area' => 'Lumbar',
-        'is_official' => true
-    ]);
+            // TRICEPS
+            [
+                'name' => 'Press francés',
+                'description' => 'Ejercicio clásico de tríceps',
+                'duration' => 15,
+                'rest' => 60,
+                'repetitions' => 12,
+                'sets' => 4,
+                'weight' => 30,
+                'weight_unit' => 'kg',
+                'muscle_group' => 'Tríceps',
+                'muscle_area' => 'Tríceps',
+            ],
 
-    Exercise::create([
-        'name' => 'Jalón al pecho',
-        'description' => 'Ejercicio de dorsal en polea alta',
-        'duration' => 15,
-        'rest' => 60,
-        'repetitions' => 12,
-        'sets' => 4,
-        'weight' => '60kg',
-        'muscle_group' => 'Espalda',
-        'muscle_area' => 'Dorsal',
-        'is_official' => true
-    ]);
+            // PIERNAS
+            [
+                'name' => 'Sentadilla',
+                'description' => 'Ejercicio principal para piernas',
+                'duration' => 25,
+                'rest' => 120,
+                'repetitions' => 8,
+                'sets' => 4,
+                'weight' => 100,
+                'weight_unit' => 'kg',
+                'muscle_group' => 'Piernas',
+                'muscle_area' => 'Cuádriceps',
+            ],
+            [
+                'name' => 'Prensa de piernas',
+                'description' => 'Trabajo de cuádriceps en máquina',
+                'duration' => 20,
+                'rest' => 90,
+                'repetitions' => 12,
+                'sets' => 4,
+                'weight' => 150,
+                'weight_unit' => 'kg',
+                'muscle_group' => 'Piernas',
+                'muscle_area' => 'Cuádriceps',
+            ],
+            [
+                'name' => 'Curl femoral',
+                'description' => 'Trabajo de isquiotibiales',
+                'duration' => 15,
+                'rest' => 60,
+                'repetitions' => 12,
+                'sets' => 4,
+                'weight' => 40,
+                'weight_unit' => 'kg',
+                'muscle_group' => 'Piernas',
+                'muscle_area' => 'Isquiotibiales',
+            ],
 
-    Exercise::create([
-        'name' => 'Press militar',
-        'description' => 'Ejercicio de hombro con barra en pie',
-        'duration' => 20,
-        'rest' => 90,
-        'repetitions' => 10,
-        'sets' => 4,
-        'weight' => '50kg',
-        'muscle_group' => 'Hombro',
-        'muscle_area' => 'Deltoides anterior',
-        'is_official' => true
-    ]);
+            // GLÚTEO
+            [
+                'name' => 'Hip Thrust',
+                'description' => 'Ejercicio principal para glúteos',
+                'duration' => 20,
+                'rest' => 90,
+                'repetitions' => 12,
+                'sets' => 4,
+                'weight' => 80,
+                'weight_unit' => 'kg',
+                'muscle_group' => 'Glúteo',
+                'muscle_area' => 'Glúteo mayor',
+            ],
 
-    Exercise::create([
-        'name' => 'Elevaciones laterales',
-        'description' => 'Ejercicio de hombro lateral con mancuernas',
-        'duration' => 15,
-        'rest' => 60,
-        'repetitions' => 15,
-        'sets' => 3,
-        'weight' => '10kg',
-        'muscle_group' => 'Hombro',
-        'muscle_area' => 'Deltoides lateral',
-        'is_official' => true
-    ]);
+            // CORE
+            [
+                'name' => 'Plancha',
+                'description' => 'Ejercicio isométrico abdominal',
+                'duration' => 60,
+                'rest' => 60,
+                'repetitions' => 1,
+                'sets' => 4,
+                'weight' => 0,
+                'weight_unit' => 'kg',
+                'muscle_group' => 'Core',
+                'muscle_area' => 'Abdomen',
+            ],
+            [
+                'name' => 'Crunch abdominal',
+                'description' => 'Trabajo básico del abdomen',
+                'duration' => 15,
+                'rest' => 45,
+                'repetitions' => 20,
+                'sets' => 4,
+                'weight' => 0,
+                'weight_unit' => 'kg',
+                'muscle_group' => 'Core',
+                'muscle_area' => 'Abdomen',
+            ],
 
-    Exercise::create([
-        'name' => 'Pájaros',
-        'description' => 'Ejercicio de hombro posterior con mancuernas',
-        'duration' => 15,
-        'rest' => 60,
-        'repetitions' => 15,
-        'sets' => 3,
-        'weight' => '8kg',
-        'muscle_group' => 'Hombro',
-        'muscle_area' => 'Deltoides posterior',
-        'is_official' => true
-    ]);
+            // CARDIO
+            [
+                'name' => 'Correr en cinta',
+                'description' => 'Ejercicio cardiovascular',
+                'duration' => 900,
+                'rest' => 0,
+                'repetitions' => 1,
+                'sets' => 1,
+                'weight' => 0,
+                'weight_unit' => 'kg',
+                'muscle_group' => 'General',
+                'muscle_area' => 'Cardio',
+            ],
+        ];
 
-    Exercise::create([
-        'name' => 'Curl con barra',
-        'description' => 'Ejercicio básico de bíceps con barra',
-        'duration' => 15,
-        'rest' => 60,
-        'repetitions' => 12,
-        'sets' => 4,
-        'weight' => '30kg',
-        'muscle_group' => 'Bíceps',
-        'muscle_area' => 'Bíceps',
-        'is_official' => true
-    ]);
-
-    Exercise::create([
-        'name' => 'Curl martillo',
-        'description' => 'Ejercicio de bíceps con agarre neutro',
-        'duration' => 15,
-        'rest' => 60,
-        'repetitions' => 12,
-        'sets' => 3,
-        'weight' => '16kg',
-        'muscle_group' => 'Bíceps',
-        'muscle_area' => 'Braquial',
-        'is_official' => true
-    ]);
-
-    Exercise::create([
-        'name' => 'Press francés',
-        'description' => 'Ejercicio de tríceps con barra en banco',
-        'duration' => 15,
-        'rest' => 60,
-        'repetitions' => 12,
-        'sets' => 4,
-        'weight' => '30kg',
-        'muscle_group' => 'Tríceps',
-        'muscle_area' => 'Tríceps',
-        'is_official' => true
-    ]);
-
-    Exercise::create([
-        'name' => 'Extensión en polea',
-        'description' => 'Ejercicio de tríceps en polea alta',
-        'duration' => 15,
-        'rest' => 60,
-        'repetitions' => 15,
-        'sets' => 3,
-        'weight' => '25kg',
-        'muscle_group' => 'Tríceps',
-        'muscle_area' => 'Tríceps',
-        'is_official' => true
-    ]);
-
-    Exercise::create([
-        'name' => 'Prensa de piernas',
-        'description' => 'Ejercicio de cuádriceps en máquina',
-        'duration' => 20,
-        'rest' => 90,
-        'repetitions' => 12,
-        'sets' => 4,
-        'weight' => '150kg',
-        'muscle_group' => 'Piernas',
-        'muscle_area' => 'Cuádriceps',
-        'is_official' => true
-    ]);
-
-    Exercise::create([
-        'name' => 'Curl femoral',
-        'description' => 'Ejercicio de isquiotibiales en máquina',
-        'duration' => 15,
-        'rest' => 60,
-        'repetitions' => 12,
-        'sets' => 4,
-        'weight' => '40kg',
-        'muscle_group' => 'Piernas',
-        'muscle_area' => 'Isquiotibiales',
-        'is_official' => true
-    ]);
-
-    Exercise::create([
-        'name' => 'Zancadas',
-        'description' => 'Ejercicio de piernas con mancuernas en movimiento',
-        'duration' => 20,
-        'rest' => 90,
-        'repetitions' => 12,
-        'sets' => 3,
-        'weight' => '20kg',
-        'muscle_group' => 'Piernas',
-        'muscle_area' => 'Cuádriceps',
-        'is_official' => true
-    ]);
-
-    Exercise::create([
-        'name' => 'Hip thrust',
-        'description' => 'Ejercicio de glúteo con barra en banco',
-        'duration' => 20,
-        'rest' => 90,
-        'repetitions' => 12,
-        'sets' => 4,
-        'weight' => '80kg',
-        'muscle_group' => 'Glúteo',
-        'muscle_area' => 'Glúteo mayor',
-        'is_official' => true
-    ]);
-
-    Exercise::create([
-        'name' => 'Patada de glúteo en polea',
-        'description' => 'Ejercicio de glúteo en polea baja',
-        'duration' => 15,
-        'rest' => 60,
-        'repetitions' => 15,
-        'sets' => 3,
-        'weight' => '15kg',
-        'muscle_group' => 'Glúteo',
-        'muscle_area' => 'Glúteo mayor',
-        'is_official' => true
-    ]);
-
-    Exercise::create([
-        'name' => 'Plancha',
-        'description' => 'Ejercicio isométrico de core',
-        'duration' => 60,
-        'rest' => 60,
-        'repetitions' => 1,
-        'sets' => 4,
-        'weight' => null,
-        'muscle_group' => 'Core',
-        'muscle_area' => 'Abdomen',
-        'is_official' => true
-    ]);
-
-    Exercise::create([
-        'name' => 'Crunch abdominal',
-        'description' => 'Ejercicio básico de abdomen',
-        'duration' => 15,
-        'rest' => 45,
-        'repetitions' => 20,
-        'sets' => 4,
-        'weight' => null,
-        'muscle_group' => 'Core',
-        'muscle_area' => 'Abdomen',
-        'is_official' => true
-    ]);
-
-    Exercise::create([
-        'name' => 'Rueda abdominal',
-        'description' => 'Ejercicio avanzado de core con rueda',
-        'duration' => 15,
-        'rest' => 60,
-        'repetitions' => 12,
-        'sets' => 3,
-        'weight' => null,
-        'muscle_group' => 'Core',
-        'muscle_area' => 'Abdomen',
-        'is_official' => true
-    ]);
-
-    Exercise::create([
-        'name' => 'Correr en cinta',
-        'description' => 'Ejercicio de cardio en cinta',
-        'duration' => 900,
-        'rest' => 0,
-        'repetitions' => 1,
-        'sets' => 1,
-        'weight' => null,
-        'muscle_group' => 'default',
-        'muscle_area' => 'default',
-        'is_official' => true
-    ]);
-
+        foreach ($exercises as $exercise) {
+            Exercise::create([
+                ...$exercise,
+                'user_id' => null, // Oficial
+            ]);
+        }
     }
 }
