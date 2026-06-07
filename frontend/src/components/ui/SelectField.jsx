@@ -1,6 +1,6 @@
 export default function SelectField({ label, value, onChange, options = [], placeholder, error, className, disabled = false }) {
 
-    
+
   const disabledStyles = 'opacity-40 cursor-not-allowed pointer-events-none'
 
   return (
@@ -31,7 +31,7 @@ export default function SelectField({ label, value, onChange, options = [], plac
               key={opt.value ?? opt}
               value={opt.value ?? opt}
               className="bg-zinc-800 text-white hover:bg-tigergrit"
-              
+
             >
               {opt.label ?? opt}
             </option>

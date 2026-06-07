@@ -7,6 +7,8 @@ import RoutineCard from '../components/ui/RoutineCard'
 import RoutineModal from '../components/layout/RoutineModal'
 import ExerciseModal from '../components/layout/ExerciseModal'
 import ExerciseFilter from '../components/ui/Filter'
+import Toast from '../components/ui/Toast'
+import { useToast } from '../hooks/useToast'
 
 function CalendarPage() {
 
@@ -14,6 +16,29 @@ function CalendarPage() {
   const [selectedRoutineId, setSelectedRoutineId] = useState(null)
   const [modalRoutine, setModalRoutine] = useState(null) // Estado para almacenar la rutina seleccionada
   const [isModalOpen, setIsModalOpen] = useState(false) // Estado para controlar la visibilidad del modal
+  const { toast, showToast, hideToast } = useToast() // apertura del toast
+
+  const openRoutineModal = async (routineFromCalendar) => {
+    const token = localStorage.getItem('token')
+
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/routines/${routineFromCalendar.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+
+      setModalRoutine(res.data)
+      setIsModalOpen(true)
+
+    } catch (error) {
+      console.error(error)
+      showToast('Error al abrir la rutina', 'error')
+    }
+  }
 
   useEffect(() => {
 
@@ -35,8 +60,8 @@ function CalendarPage() {
   }, [routines])
 
   const getRoutines = async () => {
-  
-  const token = localStorage.getItem('token')
+
+    const token = localStorage.getItem('token')
 
     try {
 
@@ -62,9 +87,15 @@ function CalendarPage() {
   }
 
   const [date, setDate] = useState(new Date())
+
   const assignRoutine = async () => {
 
-  const token = localStorage.getItem('token')
+    if (!selectedRoutineId) {
+      showToast('Selecciona una rutina primero', 'warning')
+      return
+    }
+
+    const token = localStorage.getItem('token')
 
     try {
 
@@ -88,10 +119,12 @@ function CalendarPage() {
       )
 
       getScheduledRoutines()
+      showToast('Rutina asignada correctamente', 'success')
 
     } catch (error) {
 
       console.error(error)
+      showToast('Error al asignar la rutina', 'error')
 
     }
   }
@@ -136,6 +169,7 @@ function CalendarPage() {
     )
 
     if (!scheduled) { // Si no hay rutina
+      showToast('No hay rutina asignada en esta fecha', 'warning')
       return
     }
 
@@ -148,81 +182,82 @@ function CalendarPage() {
       )
 
       getScheduledRoutines()
+      showToast('Rutina eliminada del calendario', 'success')
 
     } catch (error) {
       console.error(error)
+      showToast('Error al eliminar la rutina', 'error')
     }
   }
 
   return (
-
     <main className="flex flex-col items-center px-6 gap-6">
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-[1500px] flex flex-col gap-5">
+      <div className="bg-[#1A1A1A] border-x border-zinc-800 p-4 w-full max-w-[1500px] flex flex-col gap-5">
 
-      <CalendarView
-        date={date}
-        setDate={setDate}
-        scheduledRoutines={scheduledRoutines}
-      />
+        {/* Fila superior: buscador + slider + botones */}
+        <div className="flex flex-col sm:flex-row items-start gap-4 w-full h-fit">
 
-      
-      <div className='flex flex-row flex-wrap items-center gap-8'>
-        {/* Informacion de la fecha seleccionada */}
-        {/* <p>
-          Fecha seleccionada:
-          {date.toDateString()}
-        </p> */}
-        <div className="flex flex-col gap-3 w-full">
-          <p className="text-zinc-500 text-xs uppercase tracking-widest">
-            Selecciona rutina
-          </p>
-          <ExerciseFilter
-            exercises={routines}
-            onFilter={setFilteredRoutines}
-            onlySearch
-          />
-          {/*Estilo del slider*/}
-          <div className="flex gap-3 overflow-x-auto pb-3 scroll-smooth snap-x snap-mandatory"
-            style={{ scrollbarWidth: 'thin', scrollbarColor: '#f46701 #27272a' }}
-          >
-            {filteredRoutines.map((routine) => {
-              const isSelected =
-                Number(selectedRoutineId) === Number(routine.id)
-
-                    return (
-                      <div
-                        key={routine.id}
-                        onClick={() => setSelectedRoutineId(routine.id)}
-                        onDoubleClick={() => {
-                          setModalRoutine(routine)
-                          setIsModalOpen(true)
-                        }}
-                        className={`
-                          relative shrink-0 w-48 cursor-pointer rounded-2xl border-2 transition
-                          ${isSelected
-                            ? 'border-tigergrit bg-zinc-800'
-                            : 'border-zinc-700 bg-zinc-900 hover:border-zinc-500'
-                          }
-                        `}
-                      >
-                        <RoutineCard
-                          routine={routine}
-                          compact
-                        />
-                      </div>
-                    )
-                  })}
+          {/* Buscador + Slider */}
+          <div className="flex flex-col gap-3 min-w-0 flex-1 sm:w-auto w-[100%]">
+            <p className="text-zinc-500 text-xs uppercase tracking-widest">
+              Buscar rutina
+            </p>
+            <ExerciseFilter
+              exercises={routines}
+              onFilter={setFilteredRoutines}
+              onlySearch
+            />
+            <p className="text-zinc-500 text-xs uppercase tracking-widest">
+              Selecciona rutina
+            </p>
+            <div
+              className="flex flex-row gap-3 overflow-x-auto pb-2 snap-x snap-mandatory"
+              style={{ scrollbarWidth: 'thin', scrollbarColor: '#f46701 #27272a' }}
+            >
+              {filteredRoutines.map((routine) => {
+                const isSelected = Number(selectedRoutineId) === Number(routine.id)
+                return (
+                  <div
+                    key={routine.id}
+                    onClick={() => setSelectedRoutineId(routine.id)}
+                    onDoubleClick={() => openRoutineModal(routine)}
+                    className={`
+                    relative shrink-0 w-48 cursor-pointer rounded-2xl border-2 transition snap-start
+                    ${isSelected
+                        ? 'border-tigergrit bg-zinc-800'
+                        : 'border-zinc-700 bg-zinc-900 hover:border-zinc-500'
+                      }
+                  `}
+                  >
+                    <RoutineCard routine={routine} compact />
+                  </div>
+                )
+              })}
+            </div>
           </div>
+
+          {/* Botones + - */}
+          <div className="flex flex-row gap-2 shrink-0 sm:w-auto sm:flex-col sm:pt-8 w-[100%]">
+            <Button onClick={deleteRoutine} variant='primary' className='w-full sm:w-12 sm:h-12 py-2 text-xl sm:text-2xl lg:text-3xl'>
+              -
+            </Button>
+            <Button onClick={assignRoutine} variant='primary' className='w-full sm:w-12 sm:h-12 py-2 text-xl sm:text-2xl lg:text-3xl'>
+              +
+            </Button>
+          </div>
+
         </div>
 
-        <Button onClick={assignRoutine} variant='primary'>
-          Añadir rutina
-        </Button>
+        {/* Calendario siempre debajo */}
+        <div className="w-full overflow-x-auto">
+          <CalendarView
+            date={date}
+            setDate={setDate}
+            scheduledRoutines={scheduledRoutines}
+            onOpenRoutine={openRoutineModal}
+          />
+        </div>
 
-        <Button onClick={deleteRoutine} variant='primary'>
-          Eliminar rutina
-        </Button>
-      </div>
         <RoutineModal
           routine={modalRoutine}
           isOpen={isModalOpen}
@@ -236,7 +271,12 @@ function CalendarPage() {
             setModalRoutine(null)
           }}
         />
+
       </div>
+
+      {/* Toast */}
+      {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
+
     </main>
   )
 }

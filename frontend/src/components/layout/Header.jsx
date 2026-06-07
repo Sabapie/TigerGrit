@@ -1,54 +1,75 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import IsologotipoTigerGrit from '/Isologotipo-TigerGrit_White.png'
+import UserButton from '../ui/ProfileButton'
 
 function Header() {
 
-  return (
+  // location.pathname es la ruta actual
+  const location = useLocation()
+  const isHome = location.pathname === '/'
+  const token = localStorage.getItem('token')
 
-    <header className="h-16 border-b border-zinc-800 bg-zinc-900/80 backdrop-blur sticky top-0 z-50">
+  // Para saber la ruta actual
+  const routeNames = {
+    '/calendar': 'Calendario',
+    '/exercises': 'Ejercicios',
+    '/routines': 'Rutinas',
+    '/community': 'Comunidad',
+  }
 
-      <div className="max-w-[1800px] mx-auto h-full px-6 flex items-center justify-between">
+  const [scrolled, setScrolled] = useState(false) // Controla cuando bajas en la pagina
 
-        <Link
-          to="/"
-          className="text-white text-2xl font-black"
-        >
-          TigerGrit
-        </Link>
+  useEffect(() => { // Funcion que controla la cantidad escroleada en la pagina
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
-        <nav className="flex items-center gap-6">
 
-          <Link
-            to="/dashboard"
-            className="text-zinc-400 hover:text-white transition"
-          >
-            Dashboard
+  if (isHome) return (
+    <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300
+      ${scrolled
+        ? 'bg-zinc-900/95 backdrop-blur border-b border-zinc-800 p-5'
+        : 'bg-transparent p-5 border-b border-zinc-800/0'
+      }
+    `}>
+      <div className="mx-auto 2xl:mx-40 h-full px-4 flex items-center justify-between">
+
+        {/* Logo — solo visible al hacer scroll */}
+        <div className={`transition-all duration-300 ${scrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+
+          <Link to={token ? '/calendar' : '/'}>
+            <img src={IsologotipoTigerGrit} alt="" className="w-56" />
           </Link>
 
-          <Link
-            to="/routines"
-            className="text-zinc-400 hover:text-white transition"
-          >
-            Rutinas
-          </Link>
+        </div>
 
-          <Link
-            to="/exercises"
-            className="text-zinc-400 hover:text-white transition"
-          >
-            Ejercicios
-          </Link>
-
-          <Link
-            to="/calendar"
-            className="text-zinc-400 hover:text-white transition"
-          >
-            Calendario
-          </Link>
-
-        </nav>
+        <div className="ml-auto">
+          <UserButton />
+        </div>
 
       </div>
+    </header>
+  )
 
+  return (
+    <header className="h-auto p-5 border-b border-zinc-800 bg-zinc-900/80 backdrop-blur top-0 left-0 w-full z-50">
+      <div className="mx-auto 2xl:mx-40 h-full px-4 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Link to={token ? '/calendar' : '/'}>
+            <img src={IsologotipoTigerGrit} alt="" className="w-56" />
+          </Link>
+          {routeNames[location.pathname] && (
+            <span className="text-zinc-400 text-sm sm:text-base lg:text-xl pt-5 font-bold">
+              /{routeNames[location.pathname]}
+            </span>
+          )}
+        </div>
+        <UserButton />
+      </div>
     </header>
   )
 }

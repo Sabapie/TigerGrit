@@ -15,7 +15,7 @@ function Routines() {
 
   useEffect(() => {
 
-      getRoutines()
+    getRoutines()
 
   }, [])
 
@@ -25,7 +25,7 @@ function Routines() {
   useEffect(() => {
     setFilteredRoutines(routines)
   }, [routines])
-    
+
   const getRoutines = async () => {
 
     const token = localStorage.getItem('token')
@@ -54,52 +54,64 @@ function Routines() {
   }
 
   return (
+    <main className="flex flex-col items-center px-6 gap-6">
+      <div className="bg-[#1A1A1A] border-x p-4 border-zinc-800 w-full max-w-[1500px] flex flex-col gap-5">
+      
+        <div className='flex sm:flex-row flex-col items-center justify-between bg-zinc-900'>
+            
+          <div className='border-b md:border-b-0 md:border-r border-zinc-800 w-full p-4'>
+            <ExerciseFilter
+              exercises={routines}
+              onFilter={setFilteredRoutines}
+              onlySearch
+              placeholder='Buscar Rutina...'
+            />
+          </div>
+          
+          <div className='p-4 self-stretch'>
+            <Link to={"/routine-form"}>
+                <Button
+                  variant='primary'
+                  className='w-full'
+                >
+                  Crear rutina
+                </Button>
 
-    <main className="min-h-screen flex flex-col px-4 py-8 font-sans items-center">
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-[1500px] ">
-      <h1>Mis rutinas</h1>
-      <ExerciseFilter
-            exercises={routines}
-            onFilter={setFilteredRoutines}
-            onlySearch
-      />
-      <Link to={"/routine-form"}>
-        <Button
-          variant='primary'
-        >
-          Crear rutina
-        </Button>
-      </Link>
-      {
+            </Link>
+          </div>
+
+        </div>
+
+        {
           filteredRoutines.map((routine) => ( // Mapea cada rutina a un bloque de información
 
-          <RoutineCard
+            <RoutineCard
               key={routine.id}
-              routine={routine} 
+              routine={routine}
               onSelect={() => {
-                  setSelectedRoutine(routine)
-                  setIsModalOpen(true)
+                setSelectedRoutine(routine)
+                setIsModalOpen(true)
               }}
-          />
+            />
 
           ))
-      }
+        }
 
-      <RoutineModal
+        <RoutineModal
 
           routine={selectedRoutine}
 
           isOpen={isModalOpen}
 
           onClose={() => // Cierra el modal y limpia la rutina seleccionada
-              setIsModalOpen(false)
+            setIsModalOpen(false)
           }
           onDelete={() => { // Función que se ejecuta después de eliminar una rutina
-              getRoutines()
-              setIsModalOpen(false)
-              setSelectedRoutine(null)
+            getRoutines()
+            setIsModalOpen(false)
+            setSelectedRoutine(null)
           }}
-      />
+        />
 
       </div>
     </main>

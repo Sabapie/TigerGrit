@@ -41,31 +41,39 @@ function Exercises() {
   // Filtro 
   const [filteredExercises, setFilteredExercises] = useState([])
 
-    useEffect(() => {
-      setFilteredExercises(exercises)
-    }, [exercises])
+  useEffect(() => {
+    setFilteredExercises(exercises)
+  }, [exercises])
 
 
   return (
 
-    <main className="min-h-screen flex flex-col px-4 py-8 font-sans items-center">
+    <main className="flex flex-col items-center px-6 gap-6">
+      <div className="bg-[#1A1A1A] border-x p-4 border-zinc-800 w-full max-w-[1500px] flex flex-col gap-5">
+      
+      <div className='flex sm:flex-row flex-col items-center justify-between bg-zinc-900'>
 
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-[1500px] ">
-        <ExerciseFilter
-          exercises={exercises}
-          onFilter={setFilteredExercises}
-        />
-      <Link to={"/exercise-form"}>
-        <Button
-          variant='primary'
-        >
-          Crear ejercicio
-        </Button>
-      </Link>
+        <div className='border-b md:border-b-0 md:border-r border-zinc-800 w-full'>
+          <ExerciseFilter
+                  exercises={exercises}
+                  onFilter={setFilteredExercises}
+                />
+        </div>
         
+        <div className='p-4 self-stretch'>
+          <Link to={"/exercise-form"}>
+            <Button
+              variant='primary'
+              className='w-full h-full'
+            >
+              Crear ejercicio
+            </Button>
+          </Link>
+        </div>
+
       </div>
 
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-[1500px] grid grid-cols-3 gap-5">
+      <div className= " rounded-2xl p-8 w-full max-w-[1500px] grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ">
         {
           filteredExercises.map(exercise => (
             <ExerciseCard
@@ -95,6 +103,7 @@ function Exercises() {
             setSelectedExercise(null)
           }}
         />
+      </div>
       </div>
     </main>
   )

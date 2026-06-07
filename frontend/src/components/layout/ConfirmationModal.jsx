@@ -1,7 +1,7 @@
 import Modal from './Modal'
 import Button from '../ui/Button'
 
-function ConfirmModal({isOpen, onClose, onConfirm, title = 'Confirmar acción', message = '¿Seguro que quieres continuar?', confirmText = 'Confirmar', cancelText = 'Cancelar', danger = false}) {
+function ConfirmModal({ isOpen, onClose, onConfirm, title = 'Confirmar acción', message = '¿Seguro que quieres continuar?', confirmText = 'Confirmar', cancelText = 'Cancelar', danger = false }) {
   return (
 
     <Modal

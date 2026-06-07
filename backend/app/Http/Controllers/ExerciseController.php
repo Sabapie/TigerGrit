@@ -22,8 +22,7 @@ class ExerciseController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([ // validacion
-
+        $request->validate([
             'name' => 'required',
             'duration' => 'required|integer',
             'repetitions' => 'required|integer',
@@ -33,23 +32,22 @@ class ExerciseController extends Controller
             'muscle_area' => 'required',
             'weight' => 'nullable|numeric',
             'weight_unit' => 'required|string',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048' // validacion de imagen, opcional, debe ser un archivo de imagen con formato jpg, jpeg, png o webp y no debe superar los 2MB
-
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp',  // ← acepta cualquier cosa o null
         ]);
 
         $imagePath = null;
 
         if ($request->hasFile('image')) {
-
-            $imagePath = $request
-                ->file('image')
-                ->store('exercises', 'public');
+            // Es un archivo subido
+            $imagePath = $request->file('image')->store('exercises', 'public');
+        } elseif ($request->filled('image') && is_string($request->image)) {
+            // Es una URL string
+            $imagePath = $request->image;
         }
 
-        $exercise = Exercise::create([ // creacion del ejercicio
-
+        $exercise = Exercise::create([
             'user_id' => $request->user()->id,
-            'parent_exercise_id' =>$request->parent_exercise_id,
+            'parent_exercise_id' => $request->parent_exercise_id,
             'name' => $request->name,
             'description' => $request->description,
             'image' => $imagePath,
@@ -63,10 +61,9 @@ class ExerciseController extends Controller
             'weight_unit' => $request->weight_unit,
             'observations' => $request->observations,
             'is_official' => false
-
         ]);
 
-        return response()->json($exercise, 201); // devuelve el ejercicio creado con un código de estado 201 (creado)
+        return response()->json($exercise, 201);
     }
 
     public function show(Request $request, Exercise $exercise)
@@ -92,7 +89,7 @@ class ExerciseController extends Controller
             'muscle_area' => 'required',
             'weight' => 'nullable|numeric',
             'weight_unit' => 'required|string',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048' // validacion de imagen, opcional, debe ser un archivo de imagen con formato jpg, jpeg, png o webp y no debe superar los 2MB
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp' // validacion de imagen, opcional, debe ser un archivo de imagen con formato jpg, jpeg, png o webp
 
         ]);
 

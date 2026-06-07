@@ -1,9 +1,7 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Home from './pages/Home'
-import Login from './pages/Login'
-import Register from './pages/Register'
 import NotFound from './pages/NotFound'
-import ProtectedRoute from './components/ProtectedRoute'
+import ProtectedRoute from './components/layout/ProtectedRoute'
 import Exercises from './pages/Exercises'
 import ExerciseForm from './pages/ExerciseForm'
 import RoutineForm from './pages/RoutineForm'
@@ -11,7 +9,10 @@ import Routines from './pages/Routines'
 import Navbar from './components/layout/NavBar'
 import CalendarPage from './pages/CalendarPage'
 import Header from './components/layout/Header'
+import Profile from './pages/Profile'
 import Footer from './components/layout/Footer'
+import Community from './pages/Community'
+
 
 function App() {
 
@@ -32,14 +33,6 @@ function App() {
 
         <Route
           path="/" element={<Home />}
-        />
-
-        <Route
-          path="/login" element={<Login />}
-        />
-
-        <Route
-          path="/register" element={<Register />}
         />
 
         {/* Ruta protegida para ejercicios */}
@@ -90,7 +83,21 @@ function App() {
           <ProtectedRoute>
             <CalendarPage />
           </ProtectedRoute>
-         } />    
+        } />    
+
+        <Route
+          path="/profile" element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        } />  
+
+        <Route path="/community" element={
+            <ProtectedRoute>
+              <Community />
+            </ProtectedRoute>
+          } />
+          
       </Routes>
 
       <Footer />

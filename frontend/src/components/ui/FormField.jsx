@@ -1,4 +1,4 @@
-export default function FormField({ label, type = 'text', placeholder, value, onChange, error, className, ...props}) {
+export default function FormField({ label, type = 'text', placeholder, value, onChange, error, className, ...props }) {
   return (
     <div className="flex flex-col gap-1">
       {label && (
