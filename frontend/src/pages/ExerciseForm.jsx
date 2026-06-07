@@ -7,6 +7,8 @@ import SelectField from '../components/ui/SelectField'
 import DigitalClock from '../components/ui/DigitalClock'
 import NumberStepper from '../components/ui/NumberStepper'
 import ConfirmModal from '../components/layout/ConfirmationModal'
+import Toast from '../components/ui/Toast'
+import { useToast } from '../hooks/useToast'
 
 import placeholderImg from '/TigerGrit.png'
 
@@ -40,6 +42,7 @@ function ExerciseForm() {
   const [muscleGroup, setMuscleGroup] = useState('')
   const [muscleArea, setMuscleArea] = useState('')
   const [oficial, setOficial] = useState(false)
+  const { toast, showToast, hideToast } = useToast() // apertura del toast
 
   const [errors, setErrors] = useState({})
   const [serverErrors, setServerErrors] = useState({})
@@ -98,7 +101,7 @@ function ExerciseForm() {
       if (exercise.image) {
         setImage(exercise.image)
         setImagePreview(
-          `http://localhost/GitHub/TigerGrit/backend/public/storage/${exercise.image}`
+          `${import.meta.env.VITE_API_URL.replace('/api', '')}/storage/${exercise.image}`
         )
       }
     } catch (error) {
@@ -150,12 +153,15 @@ function ExerciseForm() {
         data,
         { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } }
       )
+      showToast(id ? 'Ejercicio editado correctamente' : 'Ejercicio creado correctamente', 'success')
       navigate('/exercises')
     } catch (error) {
       if (error.response?.status === 422) {
         setServerErrors(error.response.data.errors)
+        showToast('Revisa los campos obligatorios', 'warning')
       } else {
         console.error('Error inesperado:', error.response?.data)
+        showToast('Error inesperado al guardar el ejercicio', 'error')
       }
     }
   }
@@ -166,7 +172,7 @@ function ExerciseForm() {
 
   return (
     <main className="flex flex-col items-center px-6 gap-6">
-      <div className="bg-zinc-900 border-x border-zinc-800 p-8 w-full max-w-[1500px] flex flex-col gap-5">
+      <div className="bg-[#1A1A1A] border-x border-zinc-800 w-full max-w-[1500px] p-4 flex flex-col gap-5">
 
         <h1 className="text-white text-2xl font-semibold tracking-tight">
           {id ? 'Editar ejercicio' : 'Nuevo ejercicio'}

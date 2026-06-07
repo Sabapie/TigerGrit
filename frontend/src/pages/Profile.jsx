@@ -10,7 +10,8 @@ function Profile() {
   const [stats, setStats] = useState({
     exercises: 0,
     routines: 0,
-    topRoutine: null
+    topRoutine: null,
+    topRoutineCount: 0
   })
   const [loading, setLoading] = useState(true)
 
@@ -23,24 +24,35 @@ function Profile() {
     if (!token) { navigate('/'); return }
 
     try {
-      const [userRes, exercisesRes, routinesRes] = await Promise.all([
+      const [userRes, exercisesRes, routinesRes, calendarRes] = await Promise.all([
         axios.get(`${import.meta.env.VITE_API_URL}/user`, { headers: { Authorization: `Bearer ${token}` } }),
         axios.get(`${import.meta.env.VITE_API_URL}/exercises`, { headers: { Authorization: `Bearer ${token}` } }),
         axios.get(`${import.meta.env.VITE_API_URL}/routines`, { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get(`${import.meta.env.VITE_API_URL}/calendar`, { headers: { Authorization: `Bearer ${token}` } }),
       ])
 
       setUser(userRes.data)
 
       const userExercises = exercisesRes.data.filter(e => e.user_id !== null)
       const routines = routinesRes.data
-      const topRoutine = routines.reduce((top, r) =>
-        (r.exercises?.length || 0) > (top?.exercises?.length || 0) ? r : top
-        , null)
+      const calendar = calendarRes.data
+
+      const routineCount = calendar.reduce((acc, entry) => {
+        acc[entry.routine_id] = (acc[entry.routine_id] || 0) + 1
+        return acc
+      }, {})
+
+      const topRoutineId = Object.entries(routineCount)
+        .sort((a, b) => b[1] - a[1])[0]?.[0]
+
+      const topRoutine = routines.find(r => String(r.id) === String(topRoutineId)) || null
+      const topCount = routineCount[topRoutineId] || 0
 
       setStats({
         exercises: userExercises.length,
         routines: routines.length,
-        topRoutine
+        topRoutine,
+        topRoutineCount: topCount
       })
 
     } catch (error) {
@@ -62,8 +74,6 @@ function Profile() {
     </main>
   )
 
-  const initials = user?.name?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || '?'
-
   return (
     <main className="min-h-screen px-4 py-10 flex flex-col items-center gap-6">
       <div className="w-full max-w-2xl flex flex-col gap-4">
@@ -71,7 +81,6 @@ function Profile() {
         {/* HEADER CARD */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 flex items-center gap-5 relative">
 
-          {/* Botón configuración — no funciona */}
           <button
             disabled
             className="absolute top-4 right-4 text-zinc-600 cursor-not-allowed p-2 rounded-lg hover:bg-zinc-800 transition"
@@ -84,12 +93,10 @@ function Profile() {
             </svg>
           </button>
 
-          {/* Avatar */}
           <div className="w-16 h-16 rounded-2xl bg-tigergrit flex items-center justify-center text-zinc-900 font-black text-xl shrink-0">
             <img src={userIcon} alt="" />
           </div>
 
-          {/* Info */}
           <div className="flex flex-col gap-0.5">
             <h1 className="text-white text-xl font-bold tracking-tight">{user?.name}</h1>
             <p className="text-zinc-400 text-sm">{user?.email}</p>
@@ -115,20 +122,25 @@ function Profile() {
 
         </div>
 
-        {/* RUTINA MÁS POPULAR */}
+        {/* RUTINA MÁS USADA */}
         {stats.topRoutine && (
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 flex flex-col gap-3">
-            <p className="text-zinc-500 text-xs uppercase tracking-widest">Rutina más completa</p>
+            <p className="text-zinc-500 text-xs uppercase tracking-widest">Rutina más usada</p>
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-tigergrit/10 border border-tigergrit/20 flex items-center justify-center text-2xl shrink-0">
-                🏋️
+                💪
               </div>
-              <div>
-                <h3 className="text-white font-bold">{stats.topRoutine.name}</h3>
-                <p className="text-zinc-500 text-xs">
-                  {stats.topRoutine.exercises?.length || 0} ejercicios ·{' '}
-                  {stats.topRoutine.exercises?.reduce((a, e) => a + (e.sets || 0), 0) || 0} series
-                </p>
+              <div className='flex flex-row w-full justify-between'>
+                <div>
+                    <h3 className="text-white font-bold">{stats.topRoutine.name}</h3>
+                  <p className="text-zinc-500 text-xs">
+                    {stats.topRoutine.exercises?.length || 0} ejercicios ·{' '}
+                    {stats.topRoutine.exercises?.reduce((a, e) => a + (e.sets || 0), 0) || 0} series
+                  </p>
+                </div>
+                <div className=''>
+                  {stats.topRoutineCount} {stats.topRoutineCount === 1 ? 'vez' : 'veces'} asignada 🏆
+                </div>
               </div>
             </div>
           </div>

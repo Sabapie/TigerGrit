@@ -59,7 +59,7 @@ const EXERCISE_TYPE_OPTIONS = [
 
 ]
 
-function ExerciseFilter({ exercises, onFilter, onlySearch = false }) {
+function ExerciseFilter({ exercises, onFilter, onlySearch = false , placeholder}) {
 
   const [search, setSearch] = useState('')
   const [muscleGroup, setMuscleGroup] = useState('')
@@ -141,7 +141,7 @@ function ExerciseFilter({ exercises, onFilter, onlySearch = false }) {
 
   if (onlySearch) return (
     <FormField
-      placeholder="Buscar ejercicio..."
+      placeholder={placeholder}
       value={search}
       className="h-full"
       onChange={(e) =>
@@ -153,55 +153,45 @@ function ExerciseFilter({ exercises, onFilter, onlySearch = false }) {
   return (
 
     <div className="bg-zinc-900 rounded-2xl p-4 flex flex-col gap-4">
-      <div className=' flex flex-row gap-5 justify-start items-center'>
-        <FormField
-          placeholder="Buscar ejercicio..."
-          value={search}
-          className="h-full"
-          onChange={(e) =>
-            setSearch(e.target.value)
-          }
-        />
+      <div className='flex flex-col sm:flex-col gap-4 items-stretch'>
+        
+        {/* Buscador */}
+        <div className="w-full sm:w-auto sm:flex-1">
+          <FormField
+            placeholder="Buscar ejercicio..."
+            value={search}
+            className="w-full h-full"
+            onChange={(e) => setSearch(e.target.value)} 
+          />
+        </div>
 
-        <SelectField
-          label="Grupo muscular"
-          value={muscleGroup}
-          onChange={(e) =>
-            setMuscleGroup(e.target.value)
-          }
-          options={MUSCLE_GROUP_OPTIONS}
-        />
-
-        <SelectField
-          label="Área muscular"
-          value={muscleArea}
-          onChange={(e) =>
-            setMuscleArea(e.target.value)
-          }
-          options={MUSCLE_AREA_OPTIONS}
-        />
-
-        <SelectField
-          label="Tipo ejercicio"
-          value={exerciseType}
-          onChange={(e) =>
-            setExerciseType(e.target.value)
-          }
-          options={EXERCISE_TYPE_OPTIONS}
-        />
+        {/* Selects */}
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+          <SelectField
+            label="Grupo muscular"
+            value={muscleGroup}
+            onChange={(e) => setMuscleGroup(e.target.value)}
+            options={MUSCLE_GROUP_OPTIONS}
+          />
+          <SelectField
+            label="Área muscular"
+            value={muscleArea}
+            onChange={(e) => setMuscleArea(e.target.value)}
+            options={MUSCLE_AREA_OPTIONS}
+          />
+          <SelectField
+            label="Tipo ejercicio"
+            value={exerciseType}
+            onChange={(e) => setExerciseType(e.target.value)}
+            options={EXERCISE_TYPE_OPTIONS}
+          />
+        </div>
 
       </div>
 
-
-      <Button
-        variant="primary"
-        onClick={clearFilters}
-      >
-
+      <Button variant="secondary" onClick={clearFilters} className="w-full sm:w-auto ">
         Limpiar filtros
-
       </Button>
-
     </div>
   )
 }

@@ -11,7 +11,7 @@ function ExerciseModal({ exercise, isOpen, onClose, onDelete }) {
     const getImageUrl = (image) => {
         if (!image) return null
         if (image.startsWith('http')) return image  // ya es URL completa
-        return `http://localhost/GitHub/TigerGrit/backend/public/storage/${image}`
+        return `${import.meta.env.VITE_API_URL.replace('/api', '')}/storage/${image}`
     }
 
     const navigate = useNavigate()
@@ -30,6 +30,7 @@ function ExerciseModal({ exercise, isOpen, onClose, onDelete }) {
     }
 
     if (!exercise) return null
+
 
     return (
         <>
@@ -54,7 +55,7 @@ function ExerciseModal({ exercise, isOpen, onClose, onDelete }) {
                 </div>
 
                 {/* Cabecera */}
-                <div className="flex gap-4 mb-6 pr-36">
+                <div className="flex gap-4 mb-6 pr-36 pt-12">
                     {exercise.image
                         ? <img src={getImageUrl(exercise.image)} alt={exercise.name} className="w-full h-full object-cover" />
                         : <div className="w-20 h-20 rounded-xl bg-zinc-800 shrink-0 flex items-center justify-center text-zinc-500 text-2xl"><img src={placeholderImg} alt='Sin imagen' className="grayscale opacity-30" /></div>

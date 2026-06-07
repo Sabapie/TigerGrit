@@ -1,4 +1,9 @@
+import { useLocation } from 'react-router-dom'
+
 function Footer() {
+  const location = useLocation()
+  if (location.pathname === '/community') return null
+
   return (
     <footer className="bg-zinc-900 border-t border-zinc-800 py-12 px-6">
       <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-8 mb-8">

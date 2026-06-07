@@ -5,7 +5,7 @@ function ExerciseCard({ exercise, onSelect, compact = false }) {
   const getImageUrl = (image) => {
     if (!image) return null
     if (image.startsWith('http')) return image  // ya es URL completa
-    return `http://localhost/GitHub/TigerGrit/backend/public/storage/${image}`
+    return `${import.meta.env.VITE_API_URL.replace('/api', '')}/storage/${image}`
   }
 
   if (compact) return (

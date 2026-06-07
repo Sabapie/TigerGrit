@@ -7,6 +7,8 @@ import FormField from '../components/ui/FormField'
 import ExerciseCard from '../components/ui/ExerciseCard'
 import ExerciseFilter from '../components/ui/Filter'
 import ConfirmModal from '../components/layout/ConfirmationModal'
+import Toast from '../components/ui/Toast'
+import { useToast } from '../hooks/useToast'
 
 function RoutineForm() {
 
@@ -14,6 +16,7 @@ function RoutineForm() {
   const [exercises, setExercises] = useState([])
   const [selectedExercises, setSelectedExercises] = useState([])
   const [name, setName] = useState('')
+  const { toast, showToast, hideToast } = useToast() // apertura del toast
 
   const { id } = useParams()
   const navigate = useNavigate()
@@ -185,12 +188,12 @@ function RoutineForm() {
         }
 
       )
-
+      showToast(id ? 'Rutina editada correctamente' : 'Rutina creada correctamente', 'success')
       navigate('/routines')
 
     } catch (error) {
-
       console.error(error)
+      showToast('Error inesperado al guardar la rutina', 'error')
 
     }
   }
@@ -209,8 +212,8 @@ function RoutineForm() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col px-4 py-8 font-sans items-center">
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-[1500px] flex flex-col gap-5">
+    <main className="flex flex-col items-center px-6 gap-6">
+      <div className="bg-[#1A1A1A] border-x p-4 border-zinc-800 w-full max-w-[1500px] flex flex-col gap-5">
 
         <h1 className="text-white text-2xl font-semibold tracking-tight">
           {id ? 'Editar rutina' : 'Crear rutina'}

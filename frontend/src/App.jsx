@@ -1,7 +1,7 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
-import ProtectedRoute from './components/ProtectedRoute'
+import ProtectedRoute from './components/layout/ProtectedRoute'
 import Exercises from './pages/Exercises'
 import ExerciseForm from './pages/ExerciseForm'
 import RoutineForm from './pages/RoutineForm'

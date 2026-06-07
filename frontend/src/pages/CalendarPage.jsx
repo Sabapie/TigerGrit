@@ -7,6 +7,8 @@ import RoutineCard from '../components/ui/RoutineCard'
 import RoutineModal from '../components/layout/RoutineModal'
 import ExerciseModal from '../components/layout/ExerciseModal'
 import ExerciseFilter from '../components/ui/Filter'
+import Toast from '../components/ui/Toast'
+import { useToast } from '../hooks/useToast'
 
 function CalendarPage() {
 
@@ -14,6 +16,7 @@ function CalendarPage() {
   const [selectedRoutineId, setSelectedRoutineId] = useState(null)
   const [modalRoutine, setModalRoutine] = useState(null) // Estado para almacenar la rutina seleccionada
   const [isModalOpen, setIsModalOpen] = useState(false) // Estado para controlar la visibilidad del modal
+  const { toast, showToast, hideToast } = useToast() // apertura del toast
 
   const openRoutineModal = async (routineFromCalendar) => {
     const token = localStorage.getItem('token')
@@ -33,6 +36,7 @@ function CalendarPage() {
 
     } catch (error) {
       console.error(error)
+      showToast('Error al abrir la rutina', 'error')
     }
   }
 
@@ -83,7 +87,13 @@ function CalendarPage() {
   }
 
   const [date, setDate] = useState(new Date())
+
   const assignRoutine = async () => {
+
+    if (!selectedRoutineId) {
+      showToast('Selecciona una rutina primero', 'warning')
+      return
+    }
 
     const token = localStorage.getItem('token')
 
@@ -109,10 +119,12 @@ function CalendarPage() {
       )
 
       getScheduledRoutines()
+      showToast('Rutina asignada correctamente', 'success')
 
     } catch (error) {
 
       console.error(error)
+      showToast('Error al asignar la rutina', 'error')
 
     }
   }
@@ -157,6 +169,7 @@ function CalendarPage() {
     )
 
     if (!scheduled) { // Si no hay rutina
+      showToast('No hay rutina asignada en esta fecha', 'warning')
       return
     }
 
@@ -169,9 +182,11 @@ function CalendarPage() {
       )
 
       getScheduledRoutines()
+      showToast('Rutina eliminada del calendario', 'success')
 
     } catch (error) {
       console.error(error)
+      showToast('Error al eliminar la rutina', 'error')
     }
   }
 
@@ -226,10 +241,9 @@ function CalendarPage() {
             <Button onClick={deleteRoutine} variant='primary' className='w-full sm:w-12 sm:h-12 py-2 text-xl sm:text-2xl lg:text-3xl'>
               -
             </Button>
-            <Button onClick={assignRoutine} variant='primary' className='w-full sm:w-12 sm:h-12 py-2 text-xl sm:text-2xl lg:text-3xl w-'>
+            <Button onClick={assignRoutine} variant='primary' className='w-full sm:w-12 sm:h-12 py-2 text-xl sm:text-2xl lg:text-3xl'>
               +
             </Button>
-
           </div>
 
         </div>
@@ -259,6 +273,10 @@ function CalendarPage() {
         />
 
       </div>
+
+      {/* Toast */}
+      {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
+
     </main>
   )
 }

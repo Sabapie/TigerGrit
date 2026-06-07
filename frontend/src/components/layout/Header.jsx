@@ -10,6 +10,14 @@ function Header() {
   const isHome = location.pathname === '/'
   const token = localStorage.getItem('token')
 
+  // Para saber la ruta actual
+  const routeNames = {
+    '/calendar': 'Calendario',
+    '/exercises': 'Ejercicios',
+    '/routines': 'Rutinas',
+    '/community': 'Comunidad',
+  }
+
   const [scrolled, setScrolled] = useState(false) // Controla cuando bajas en la pagina
 
   useEffect(() => { // Funcion que controla la cantidad escroleada en la pagina
@@ -50,9 +58,16 @@ function Header() {
   return (
     <header className="h-auto p-5 border-b border-zinc-800 bg-zinc-900/80 backdrop-blur top-0 left-0 w-full z-50">
       <div className="mx-auto 2xl:mx-40 h-full px-4 flex items-center justify-between">
-        <Link to={token ? '/calendar' : '/'}>
-          <img src={IsologotipoTigerGrit} alt="" className="w-56" />
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link to={token ? '/calendar' : '/'}>
+            <img src={IsologotipoTigerGrit} alt="" className="w-56" />
+          </Link>
+          {routeNames[location.pathname] && (
+            <span className="text-zinc-400 text-sm sm:text-base lg:text-xl pt-5 font-bold">
+              /{routeNames[location.pathname]}
+            </span>
+          )}
+        </div>
         <UserButton />
       </div>
     </header>
