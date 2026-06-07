@@ -1,7 +1,7 @@
 # TigerGrit
 
 <p align="center">
-  <img src="docs/logo.png" width="180" alt="TigerGrit">
+  <img src="docs/TigerGrit.png" width="180" alt="TigerGrit">
 </p>
 
 <p align="center">
